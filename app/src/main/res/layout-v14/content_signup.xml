@@ -63,26 +63,20 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:ems="10"
                 android:id="@+id/campoNome"
                 android:hint="Nome" />
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:ems="10"
-                android:id="@+id/campoNomeRepresentante"
-                android:hint="Nome Representante" />
+                android:id="@+id/campoNomeFantasia"
+                android:hint="Nome Fantasia" />
+
             <EditText
                 android:id="@+id/campoUsuario"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/prompt_username"
-                android:inputType="textEmailAddress"
-                android:maxLines="1"
-                android:singleLine="true" />
+                android:hint="@string/prompt_username" />
 
             <EditText
                 android:id="@+id/campoSenha"
@@ -90,7 +84,6 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/prompt_password"
                 android:inputType="textPassword"
-                android:maxLines="1"
                 android:singleLine="true" />
 
             <EditText
@@ -102,7 +95,6 @@
                 android:imeActionLabel="@string/action_sign_in_short"
                 android:imeOptions="actionUnspecified"
                 android:inputType="textPassword"
-                android:maxLines="1"
                 android:singleLine="true" />
 
             <EditText
@@ -114,10 +106,8 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"
-                android:ems="10"
                 android:id="@+id/campoCpfCnpj"
-                android:hint="CPF/CNJP" />
+                android:hint="CPF" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -129,17 +119,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:ems="10"
-                android:id="@+id/campoCep"
-                android:hint="CEP" />
+                android:id="@+id/campoTelefone"
+                android:hint="Telefone" />
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:ems="10"
-                android:id="@+id/campoTelefone"
-                android:hint="Telefone" />
+                android:id="@+id/campoCep"
+                android:hint="CEP" />
 
             <Button
                 android:id="@+id/action_button_signup"

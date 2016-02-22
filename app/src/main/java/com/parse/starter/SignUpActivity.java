@@ -1,6 +1,5 @@
 package com.parse.starter;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -11,8 +10,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -22,7 +19,6 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
-
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
@@ -30,29 +26,33 @@ import com.parse.SignUpCallback;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
 
 public class SignUpActivity extends AppCompatActivity {
 
+
     private EditText nomeView;
-    private EditText nomeRepresentanteView;
+    private EditText nomePFisicaView;
+    private EditText nomeRepresentantePJView;
+    private EditText nomeFantasiaPJuridicaView;
     private EditText usuarioView;
     private EditText senhaView;
     private EditText confirmaSenhaView;
     private EditText emailView;
-    private EditText cpfCnpjView;
+    private EditText cpfView;
+    private EditText cnpjView;
     private EditText enderecoView;
     private EditText telefoneView;
+    private EditText cepView;
     boolean fotoCamera;
     private Bitmap bitmap;
     ImageView imagemContatoView;
     Uri imagemUri = Uri.parse("android.resource://com.parse.starter/drawable/ic_user.png");
 
     private Switch mySwitch;
-    private TextView switchCpfCnpj, switchNome;
+    private TextView switchCpfCnpj;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,61 +62,69 @@ public class SignUpActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // Set up the signup form.
-
-
         imagemContatoView = (ImageView) findViewById(R.id.imagemContato);
-        nomeView = (EditText) findViewById(R.id.campoNome);
-        nomeRepresentanteView = (EditText) findViewById(R.id.campoNomeRepresentante);
-        nomeRepresentanteView.setVisibility(View.GONE);
-
+        nomePFisicaView = (EditText) findViewById(R.id.campoNome);
+        nomeFantasiaPJuridicaView = (EditText) findViewById(R.id.campoNomeFantasia);
+        cpfView = (EditText) findViewById(R.id.campoCpfCnpj);
         usuarioView = (EditText) findViewById(R.id.campoUsuario);
         senhaView = (EditText) findViewById(R.id.campoSenha);
         confirmaSenhaView = (EditText) findViewById(R.id.campoConfirmaSenha);
         emailView = (EditText) findViewById(R.id.campoEmail);
-        cpfCnpjView = (EditText) findViewById(R.id.campoCpfCnpj);
+
         enderecoView = (EditText) findViewById(R.id.campoEndereco);
         telefoneView = (EditText) findViewById(R.id.campoTelefone);
+        cepView = (EditText) findViewById(R.id.campoCep);
 
         /**
          * Verificação se é o cadastro de usuário ou comércio
          **/
-        switchCpfCnpj = (TextView) findViewById(R.id.campoCpfCnpj);
-        switchNome = (TextView) findViewById(R.id.campoNome);
+
         mySwitch = (Switch) findViewById(R.id.mySwitch);
 
         //set the switch to ON
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             mySwitch.setChecked(false);
+
+            nomeFantasiaPJuridicaView.setVisibility(View.GONE);
+
         }
         //attach a listener to check for changes in state
         mySwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
             @Override
-            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (!isChecked) {
+                    nomeRepresentantePJView.setVisibility(View.GONE);
+                    nomeFantasiaPJuridicaView.setVisibility(View.GONE);
 
-                if(!isChecked){
-                    switchCpfCnpj.setHint("CPF");
-                    switchNome.setHint("Nome");
-                    nomeRepresentanteView.setVisibility(View.GONE);
+                    nomePFisicaView = (EditText) findViewById(R.id.campoNome);
+                    nomePFisicaView.setVisibility(View.VISIBLE);
+                    nomePFisicaView.setHint("Nome");
 
-                }else{
+                    cnpjView = (EditText) findViewById(R.id.campoCpfCnpj);
+                    cpfView.setHint("CPF");
+
+
+                } else {
+
                     Toast.makeText(getApplicationContext(), "Comércio selecionado, preencha os campos.", Toast.LENGTH_LONG).show();
-                    switchCpfCnpj.setHint("CNPJ");
-                    switchNome.setHint("Nome Fantasia");
 
-                    nomeRepresentanteView.setVisibility(View.VISIBLE);
-                    nomeRepresentanteView.setHint("Nome Representante");
+                    nomePFisicaView.setVisibility(View.GONE);
+
+                    nomeRepresentantePJView = (EditText) findViewById(R.id.campoNome);
+                    nomeRepresentantePJView.setVisibility(View.VISIBLE);
+                    nomeRepresentantePJView.setHint("Nome Representante");
+
+                    nomeFantasiaPJuridicaView.setVisibility(View.VISIBLE);
+                    nomeFantasiaPJuridicaView = (EditText) findViewById(R.id.campoNomeFantasia);
+                    nomeFantasiaPJuridicaView.setHint("Nome Fantasia");
+
+                    cnpjView = (EditText) findViewById(R.id.campoCpfCnpj);
+                    cnpjView.setHint("CNPJ");
                 }
             }
         });
 
-        //check the current state before we display the screen
-        if(mySwitch.isChecked()){
-            switchCpfCnpj.setHint("CPF");
-        }
-        else {
-            switchCpfCnpj.setHint("CNPJ");
-        }
 
 
         // Set up the submit button click handler
@@ -125,11 +133,25 @@ public class SignUpActivity extends AppCompatActivity {
 
                 // Validate the sign up data
                 boolean validationError = false;
-                StringBuilder validationErrorMessage =
-                        new StringBuilder(getResources().getString(R.string.error_intro));
-                if (isEmpty(nomeView)) {
-                    validationError = true;
-                    validationErrorMessage.append("Informe seu nome");
+                StringBuilder validationErrorMessage = new StringBuilder(getResources().getString(R.string.error_intro));
+                if(!mySwitch.isChecked()){
+                    if (isEmpty(nomePFisicaView)) {
+                        validationError = true;
+                        validationErrorMessage.append("Informe seu nome");
+                    }
+                }else{
+                    if (isEmpty(nomeRepresentantePJView)) {
+                        validationError = true;
+                        validationErrorMessage.append("Informe o nome do representante da empresa");
+                    }
+                    if (isEmpty(nomeFantasiaPJuridicaView)) {
+                        validationError = true;
+                        validationErrorMessage.append("Informe o nome fantasia do comércio");
+                    }
+                    if (isEmpty(cnpjView)) {
+                        validationError = true;
+                        validationErrorMessage.append("Informe seu CNPJ");
+                    }
                 }
                 if (isEmpty(usuarioView)) {
                     validationError = true;
@@ -146,9 +168,9 @@ public class SignUpActivity extends AppCompatActivity {
                     validationError = true;
                     validationErrorMessage.append("Informe seu e-mail");
                 }
-                if (isEmpty(cpfCnpjView)) {
+                if (isEmpty(cpfView)) {
                     validationError = true;
-                    validationErrorMessage.append("Informe seu CPF ou CNPJ");
+                    validationErrorMessage.append("Informe seu CPF");
                 }
                 if (isEmpty(enderecoView)) {
                     validationError = true;
@@ -170,30 +192,38 @@ public class SignUpActivity extends AppCompatActivity {
 
                 // If there is a validation error, display the error
                 if (validationError) {
-                    Toast.makeText(SignUpActivity.this, validationErrorMessage.toString(), Toast.LENGTH_LONG)
-                            .show();
+                    Toast.makeText(SignUpActivity.this, validationErrorMessage.toString(), Toast.LENGTH_LONG).show();
                     return;
                 }
 
                 // Set up a progress dialog
                 final ProgressDialog dlg = new ProgressDialog(SignUpActivity.this);
-                dlg.setTitle("Please wait.");
-                dlg.setMessage("Signing up.  Please wait.");
+                dlg.setTitle("Por favor, aguarde...");
+                dlg.setMessage("Cadastrando... Por favor, aguarde...");
                 dlg.show();
 
                 // Set up a new Parse user
                 ParseUser user = new ParseUser();
-                user.put("nome", nomeView.getText().toString());
+                if (!mySwitch.isChecked()) { //Cadastro de pessoa física
+                    user.put("isComercio", false);
+                    user.put("nome", nomePFisicaView.getText().toString());
+                    user.put("cpf", cpfView.getText().toString());
+                } else { //Cadastro de Pessoa Jurídica
+                    user.put("isComercio", true);
+                    user.put("nomeFantasia", nomeFantasiaPJuridicaView.getText().toString());
+                    user.put("nomeRepresentante", nomeRepresentantePJView.getText().toString());
+                    user.put("cnpj", cnpjView.getText().toString());
+                }
+                //Cadastro comum entre entre PF e PJ
                 user.setUsername(usuarioView.getText().toString());
                 user.setPassword(senhaView.getText().toString());
                 user.put("email", emailView.getText().toString());
-                user.put("cpfcnpj", cpfCnpjView.getText().toString());
                 user.put("endereco", enderecoView.getText().toString());
                 user.put("telefone", telefoneView.getText().toString());
-
+                user.put("cep", cepView.getText().toString());
 
                 byte[] braveData = (imagemContatoView.toString()).getBytes();
-                ParseFile imgFile = new ParseFile (nomeView.getText().toString()+"_"+"Usuario.png", braveData);
+                ParseFile imgFile = new ParseFile(nomePFisicaView.getText().toString() + "_" + "Usuario.png", braveData);
                 imgFile.saveInBackground();
                 user.put("foto", imgFile);
 
@@ -216,10 +246,7 @@ public class SignUpActivity extends AppCompatActivity {
                 });
             }
         });
-
-
     }
-
 
     private boolean isEmpty(EditText etText) {
         if (etText.getText().toString().trim().length() > 0) {
@@ -237,18 +264,18 @@ public class SignUpActivity extends AppCompatActivity {
         }
     }
 
-    public void clicaCarregarImagem(View v){
-        fotoCamera=false;
+    public void clicaCarregarImagem(View v) {
+        fotoCamera = false;
         Intent intent = new Intent();
         intent.setType("image*//*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Contact Image"), 1);
     }
 
-    public void clicaTirarFoto(View v){
+    public void clicaTirarFoto(View v) {
         fotoCamera = true;
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent,0);
+        startActivityForResult(intent, 0);
     }
 
     @Override
@@ -261,14 +288,11 @@ public class SignUpActivity extends AppCompatActivity {
                     if (bitmap != null) {
                         bitmap.recycle();
                     }
-                    Log.i("AppInfo", "DATA!!"+data.getData());
-                    Log.i("AppInfo", "STREAM NULO!!"+stream);
+
                     stream = getContentResolver().openInputStream(data.getData());
-                    Log.i("AppInfo", "STREAM NULO!!"+stream);
-                    if(stream==null){
-                        Log.i("AppInfo", "STREAM NULO!!");
-                        bitmap = (Bitmap)data.getExtras().get("data");
-                    }else{
+                    if (stream == null) {
+                        bitmap = (Bitmap) data.getExtras().get("data");
+                    } else {
                         bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), data.getData());
                     }
 
@@ -294,7 +318,7 @@ public class SignUpActivity extends AppCompatActivity {
                 }
 
             }
-        }else{
+        } else {
 
             if (resultCode == RESULT_OK) {
                 if (requestCode == 1) {
@@ -324,5 +348,4 @@ public class SignUpActivity extends AppCompatActivity {
         return novoBmp;
 
     }
-
 }
