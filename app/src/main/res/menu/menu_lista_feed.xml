@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".Feed">
+    <item android:id="@+id/publicar"
+        android:title="Publicar"
+        app:showAsAction="always"/>
+
+    <item android:id="@+id/usuarios"
+        android:title="Usuários"
+        app:showAsAction="always"/>
+
+    <item android:id="@+id/logout"
+        android:title="Logout"
+        app:showAsAction="always"/>
+</menu>
