@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -70,7 +71,6 @@ public class SignUpActivity extends AppCompatActivity {
         senhaView = (EditText) findViewById(R.id.campoSenha);
         confirmaSenhaView = (EditText) findViewById(R.id.campoConfirmaSenha);
         emailView = (EditText) findViewById(R.id.campoEmail);
-
         enderecoView = (EditText) findViewById(R.id.campoEndereco);
         telefoneView = (EditText) findViewById(R.id.campoTelefone);
         cepView = (EditText) findViewById(R.id.campoCep);
@@ -78,7 +78,6 @@ public class SignUpActivity extends AppCompatActivity {
         /**
          * Verificação se é o cadastro de usuário ou comércio
          **/
-
         mySwitch = (Switch) findViewById(R.id.mySwitch);
 
         //set the switch to ON
@@ -106,8 +105,11 @@ public class SignUpActivity extends AppCompatActivity {
 
 
                 } else {
+                    Toast toast = Toast.makeText(getApplicationContext(), "Comércio selecionado, preencha os campos.", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.TOP, 10, 10);
+                    toast.show();
 
-                    Toast.makeText(getApplicationContext(), "Comércio selecionado, preencha os campos.", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(), "Comércio selecionado, preencha os campos.", Toast.LENGTH_LONG).show();
 
                     nomePFisicaView.setVisibility(View.GONE);
 
@@ -206,7 +208,7 @@ public class SignUpActivity extends AppCompatActivity {
                 ParseUser user = new ParseUser();
                 if (!mySwitch.isChecked()) { //Cadastro de pessoa física
                     user.put("isComercio", false);
-                    user.put("nome", nomePFisicaView.getText().toString());
+                    user.put("nomePessoaFisica", nomePFisicaView.getText().toString());
                     user.put("cpf", cpfView.getText().toString());
                 } else { //Cadastro de Pessoa Jurídica
                     user.put("isComercio", true);

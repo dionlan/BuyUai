@@ -135,7 +135,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="32dp"
                 android:paddingRight="32dp"
-                android:text="@string/sign_up"
+                android:text="Cadastrar"
                 android:layout_gravity="center_horizontal" />
 
         </LinearLayout>

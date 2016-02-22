@@ -76,7 +76,12 @@ public class Feed extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_lista_feed, menu);
+        if (ParseUser.getCurrentUser().get("isComercio").equals(false)) {
+            getMenuInflater().inflate(R.menu.menu_lista_feed_pessoa_fisica, menu);
+
+        }else{
+            getMenuInflater().inflate(R.menu.menu_lista_feed_pessoa_juridica, menu);
+        }
         return true;
     }
 
@@ -95,78 +100,78 @@ public class Feed extends AppCompatActivity {
 
         }else if (id == R.id.publicar) {
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-            builder.setTitle("Enviar uma oferta");
-            final EditText descricao = new EditText(this);
-            descricao.setHint("Descrição");
+                builder.setTitle("Enviar uma oferta");
+                final EditText descricao = new EditText(this);
+                descricao.setHint("Descrição");
 
-            final EditText preco = new EditText(this);
-            preco.setHint("Preço");
-            preco.setInputType(InputType.TYPE_NUMBER_VARIATION_NORMAL);
+                final EditText preco = new EditText(this);
+                preco.setHint("Preço");
+                preco.setInputType(InputType.TYPE_NUMBER_VARIATION_NORMAL);
 
-            LinearLayout lay = new LinearLayout(this);
-            lay.setOrientation(LinearLayout.VERTICAL);
+                LinearLayout lay = new LinearLayout(this);
+                lay.setOrientation(LinearLayout.VERTICAL);
 
 
-            Button buyButton = new Button(this);
-            buyButton.setText("Tirar Foto");
+                Button buyButton = new Button(this);
+                buyButton.setText("Tirar Foto");
 
-            buyButton.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
+                buyButton.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
 
-                    //Aqui dentro do OnClick, você faz da mesma forma que você trabalha para abrir uma Activity
-                    Intent intent = new Intent();
-                    intent.setType("image*//*");
-                    intent.setAction(Intent.ACTION_GET_CONTENT);
-                    startActivityForResult(Intent.createChooser(intent, "Select Contact Image"), 1);
+                        //Aqui dentro do OnClick, você faz da mesma forma que você trabalha para abrir uma Activity
+                        Intent intent = new Intent();
+                        intent.setType("image*//*");
+                        intent.setAction(Intent.ACTION_GET_CONTENT);
+                        startActivityForResult(Intent.createChooser(intent, "Select Contact Image"), 1);
 
-                }
-            });
+                    }
+                });
 
-            lay.addView(descricao);
-            lay.addView(preco);
-            lay.addView(buyButton);
+                lay.addView(descricao);
+                lay.addView(preco);
+                lay.addView(buyButton);
 
-            builder.setView(lay);
+                builder.setView(lay);
 
-            builder.setPositiveButton("Enviar", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
+                builder.setPositiveButton("Enviar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
-                    ParseObject publica = new ParseObject("Publicacao");
-                    publica.put("username", ParseUser.getCurrentUser().getUsername());
-                    publica.put("descricao", String.valueOf(descricao.getText()));
-                    publica.put("preco", String.valueOf(preco.getText()));
+                        ParseObject publica = new ParseObject("Publicacao");
+                        publica.put("username", ParseUser.getCurrentUser().getUsername());
+                        publica.put("descricao", String.valueOf(descricao.getText()));
+                        publica.put("preco", String.valueOf(preco.getText()));
 
-                    //detalhe = descrição e preço
-                    String detalheProduto = String.valueOf(descricao.getText()) + " - " + String.valueOf(preco.getText());
-                    publica.put("detalheProduto", detalheProduto);
+                        //detalhe = descrição e preço
+                        String detalheProduto = String.valueOf(descricao.getText()) + " - " + String.valueOf(preco.getText());
+                        publica.put("detalheProduto", detalheProduto);
 
-                    publica.saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e == null) {
+                        publica.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if (e == null) {
 
-                                Toast.makeText(getApplicationContext(), "Sua publicação foi enviada.", Toast.LENGTH_LONG).show();
-                            } else {
-                                Log.i("AppInfo", "ERRO: "+e);
-                                Toast.makeText(getApplicationContext(), "Sua publicação não pode ser enviada - por favor tente novamente.", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getApplicationContext(), "Sua publicação foi enviada.", Toast.LENGTH_LONG).show();
+                                } else {
+                                    Log.i("AppInfo", "ERRO: "+e);
+                                    Toast.makeText(getApplicationContext(), "Sua publicação não pode ser enviada - por favor tente novamente.", Toast.LENGTH_LONG).show();
+                                }
                             }
-                        }
-                    });
-                }
-            });
-            builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
+                        });
+                    }
+                });
+                builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
-                    dialog.cancel();
-                }
-            });
-            builder.show();
-            return true;
-        }else if (id == R.id.logout) {
+                        dialog.cancel();
+                    }
+                });
+                builder.show();
+                return true;
+            }else if (id == R.id.logout) {
             ParseUser.getCurrentUser().logOut();
             startActivity(new Intent(Feed.this, DispatchActivity.class));
             return true;

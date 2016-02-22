@@ -79,8 +79,6 @@ public class LoginOrSignup extends AppCompatActivity {
                 dlg.setMessage("Logging in.  Please wait.");
                 dlg.show();
                 // Call the Parse login method
-                Log.i("AppInfo", "Usuario: "+usernameView.getText().toString());
-                Log.i("AppInfo", "Senha: "+passwordView.getText().toString());
                 ParseUser.logInInBackground(usernameView.getText().toString(), passwordView.getText()
                         .toString(), new LogInCallback() {
 
