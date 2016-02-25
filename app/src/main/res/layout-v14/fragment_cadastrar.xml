@@ -59,18 +59,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/campoNome"
+                android:maxLines="1"
+                android:singleLine="true"
                 android:hint="Nome" />
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/campoNomeFantasia"
+                android:maxLines="1"
+                android:singleLine="true"
                 android:hint="Nome Fantasia" />
 
             <EditText
                 android:id="@+id/campoUsuario"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:singleLine="true"
                 android:hint="@string/prompt_username" />
 
             <EditText
@@ -79,6 +85,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/prompt_password"
                 android:inputType="textPassword"
+                android:maxLines="1"
                 android:singleLine="true" />
 
             <EditText
@@ -90,24 +97,31 @@
                 android:imeActionLabel="@string/action_sign_in_short"
                 android:imeOptions="actionUnspecified"
                 android:inputType="textPassword"
+                android:maxLines="1"
                 android:singleLine="true" />
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/campoEmail"
+                android:maxLines="1"
+                android:singleLine="true"
                 android:hint="E-mail" />
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/campoCpfCnpj"
+                android:maxLines="1"
+                android:singleLine="true"
                 android:hint="CPF" />
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/campoEndereco"
+                android:maxLines="1"
+                android:singleLine="true"
                 android:hint="Endereço" />
 
             <EditText
@@ -115,6 +129,8 @@
                 android:layout_height="wrap_content"
                 android:inputType="number"
                 android:id="@+id/campoTelefone"
+                android:maxLines="1"
+                android:singleLine="true"
                 android:hint="Telefone" />
 
             <EditText
@@ -122,6 +138,8 @@
                 android:layout_height="wrap_content"
                 android:inputType="number"
                 android:id="@+id/campoCep"
+                android:maxLines="1"
+                android:singleLine="true"
                 android:hint="CEP" />
 
             <Button

@@ -7,16 +7,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
-import com.parse.starter.Feed;
+import com.parse.starter.PrincipalMainActivity;
 import com.parse.starter.R;
-import com.parse.starter.SignUpActivity;
 
 public class LogarFragment extends Fragment {
 
@@ -91,7 +89,7 @@ public class LogarFragment extends Fragment {
                             Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
                         } else {
                             // Start an intent for the dispatch activity
-                            Intent intent = new Intent(getActivity(), Feed.class);
+                            Intent intent = new Intent(getActivity(), PrincipalMainActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
                         }

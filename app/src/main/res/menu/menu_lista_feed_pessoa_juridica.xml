@@ -7,10 +7,6 @@
         android:title="Publicar"
         app:showAsAction="always"/>
 
-    <item android:id="@+id/usuarios"
-        android:title="Usuários"
-        app:showAsAction="always"/>
-
     <item android:id="@+id/logout"
         android:title="Logout"
         app:showAsAction="always"/>

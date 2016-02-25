@@ -6,6 +6,8 @@ import android.os.Bundle;
 
 import com.parse.ParseUser;
 
+import fragments.FeedFragment;
+
 /**
  * Created by rufflez on 7/8/14.
  */
@@ -17,10 +19,10 @@ public class DispatchActivity extends Activity {
         // Check if there is current user info
         if (ParseUser.getCurrentUser() != null) {
             // Start an intent for the logged in activity
-            startActivity(new Intent(this, ListaUsuario.class));
+            startActivity(new Intent(this, MainActivity.class));
         } else {
             // Start and intent for the logged out activity
-            startActivity(new Intent(this, LoginOrSignup.class));
+            startActivity(new Intent(this, LoginNovoActivity.class));
         }
     }
 }

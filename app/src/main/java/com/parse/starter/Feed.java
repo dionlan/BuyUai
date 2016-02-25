@@ -105,13 +105,7 @@ public class Feed extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.usuarios) {
-
-            Intent i = new Intent(getApplicationContext(), ListaUsuario.class);
-            startActivity(i);
-
-        }else if (id == R.id.configUsuario) {
+        if (id == R.id.configUsuario) {
 
             Intent i = new Intent(getApplicationContext(), PerfilUsuario.class);
             startActivity(i);

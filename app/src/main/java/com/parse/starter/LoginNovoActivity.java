@@ -1,6 +1,5 @@
 package com.parse.starter;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -9,20 +8,16 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import fragments.CadastrarFragment;
 import fragments.LogarFragment;
-
 
 public class LoginNovoActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,9 +27,6 @@ public class LoginNovoActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
-
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
@@ -46,8 +38,8 @@ public class LoginNovoActivity extends AppCompatActivity {
 
     private void setupTabIcons() {
         int[] tabIcons = {
-                R.drawable.ic_tab_favourite,
-                R.drawable.ic_tab_contacts
+                R.drawable.ic_tab_contacts,
+                R.drawable.ic_tab_favourite
         };
 
         tabLayout.getTabAt(0).setIcon(tabIcons[0]);
@@ -57,10 +49,8 @@ public class LoginNovoActivity extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        CadastrarFragment instanceFragment;
-
-        adapter.addFrag(new CadastrarFragment(), "CADASTRAR");
         adapter.addFrag(new LogarFragment(), "LOGAR");
+        adapter.addFrag(new CadastrarFragment(), "CADASTRAR");
         viewPager.setAdapter(adapter);
     }
 

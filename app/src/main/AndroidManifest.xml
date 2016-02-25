@@ -4,9 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
     <uses-feature android:name="android.hardware.camera" />
-
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -18,12 +16,10 @@
         android:label="@string/app_name"
         android:largeHeap="true"
         android:theme="@style/MyMaterialTheme" >
-
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >
         </activity>
-
         <activity android:name=".DispatchActivity" />
         <activity android:name=".MyListActivity" />
         <activity
@@ -34,7 +30,6 @@
             android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -51,8 +46,8 @@
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
         <activity
-            android:name=".IconTabsActivity"
-            android:label="Icon Tabs"
+            android:name=".PrincipalMainActivity"
+            android:label="BuyUai. Bom."
             android:parentActivityName=".MainActivity">
         </activity>
         <activity
@@ -60,7 +55,5 @@
             android:label="BuyUai. Login"
             android:parentActivityName=".MainActivity">
         </activity>
-
     </application>
-
 </manifest>
