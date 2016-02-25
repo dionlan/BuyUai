@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.parse.starter.fragments.OneFragment"
+    tools:context="fragments.LogarFragment"
     android:background="#91c4f3">
 
     <LinearLayout
@@ -14,18 +14,17 @@
         android:layout_alignParentStart="true">
 
         <EditText
-            android:id="@+id/editText2"
+            android:id="@+id/usernameLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/prompt_username"
-            android:inputType="textEmailAddress"
             android:maxLines="1"
             android:singleLine="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
         <EditText
-            android:id="@+id/editText"
+            android:id="@+id/passwordLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/prompt_password"
@@ -40,7 +39,7 @@
             android:layout_alignParentStart="true" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/action_button_login"
             android:layout_width="75dp"
             android:layout_height="75dp"
             android:layout_centerVertical="true"

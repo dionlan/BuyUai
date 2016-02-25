@@ -1,14 +1,17 @@
 package fragments;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -26,15 +29,17 @@ import com.parse.ParseFile;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 import com.parse.starter.DispatchActivity;
-import com.parse.starter.Feed;
 import com.parse.starter.R;
-import com.parse.starter.SignUpActivity;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class CadastrarFragment extends Fragment {
 
     private EditText nomeView;
     private EditText nomePFisicaView;
-    private EditText nomeRepresentantePJView;
+    private EditText razaoSocialPJView;
     private EditText nomeFantasiaPJuridicaView;
     private EditText usuarioView;
     private EditText senhaView;
@@ -58,8 +63,7 @@ public class CadastrarFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_cadastrar, container, false);
 
@@ -91,7 +95,7 @@ public class CadastrarFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (!isChecked) {
-                    nomeRepresentantePJView.setVisibility(View.GONE);
+                    razaoSocialPJView.setVisibility(View.GONE);
                     nomeFantasiaPJuridicaView.setVisibility(View.GONE);
 
                     nomePFisicaView = (EditText) view.findViewById(R.id.campoNome);
@@ -112,9 +116,9 @@ public class CadastrarFragment extends Fragment {
 
                     nomePFisicaView.setVisibility(View.GONE);
 
-                    nomeRepresentantePJView = (EditText) view.findViewById(R.id.campoNome);
-                    nomeRepresentantePJView.setVisibility(View.VISIBLE);
-                    nomeRepresentantePJView.setHint("Nome Representante");
+                    razaoSocialPJView = (EditText) view.findViewById(R.id.campoNome);
+                    razaoSocialPJView.setVisibility(View.VISIBLE);
+                    razaoSocialPJView.setHint("Nome Representante");
 
                     nomeFantasiaPJuridicaView.setVisibility(View.VISIBLE);
                     nomeFantasiaPJuridicaView = (EditText) view.findViewById(R.id.campoNomeFantasia);
@@ -139,7 +143,7 @@ public class CadastrarFragment extends Fragment {
                         validationErrorMessage.append("Informe seu nome");
                     }
                 } else {
-                    if (isEmpty(nomeRepresentantePJView)) {
+                    if (isEmpty(razaoSocialPJView)) {
                         validationError = true;
                         validationErrorMessage.append("Informe o nome do representante da empresa");
                     }
@@ -210,7 +214,7 @@ public class CadastrarFragment extends Fragment {
                 } else { //Cadastro de Pessoa Jurídica
                     user.put("isComercio", true);
                     user.put("nomeFantasia", nomeFantasiaPJuridicaView.getText().toString());
-                    user.put("nomeRepresentante", nomeRepresentantePJView.getText().toString());
+                    user.put("razaoSocial", razaoSocialPJView.getText().toString());
                     user.put("cnpj", cnpjView.getText().toString());
                 }
                 //Cadastro comum entre entre PF e PJ
@@ -246,6 +250,26 @@ public class CadastrarFragment extends Fragment {
             }
         });
 
+        view.findViewById(R.id.botaoAddFoto).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+
+                fotoCamera = false;
+                Intent intent = new Intent();
+                intent.setType("image*//*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Contact Image"), 1);
+
+            } });
+
+        view.findViewById(R.id.botaoTirarFoto).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+
+                fotoCamera = true;
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent, 0);
+
+            } });
+
         // Defines the xml file for the fragment
         //View view = inflater.inflate(R.layout.fragment_cadastrar, container, false);
         // Setup handles to view objects here
@@ -271,18 +295,77 @@ public class CadastrarFragment extends Fragment {
         }
     }
 
-    public void clicaCarregarImagem(View v) {
-        fotoCamera = false;
-        Intent intent = new Intent();
-        intent.setType("image*//*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Contact Image"), 1);
+    @Override
+        public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Context context = null;
+        Activity activity = (Activity) context;
+
+        if (fotoCamera) {
+            super.onActivityResult(requestCode, resultCode, data);
+            InputStream stream = null;
+            if (requestCode == 0 && resultCode == -1) {
+                try {
+                    if (bitmap != null) {
+                        bitmap.recycle();
+                    }
+
+                    stream = activity.getContentResolver().openInputStream(data.getData());
+                    if (stream == null) {
+                        bitmap = (Bitmap) data.getExtras().get("data");
+                    } else {
+                        bitmap = MediaStore.Images.Media.getBitmap(activity.getContentResolver(), data.getData());
+                    }
+
+                    bitmap = BitmapFactory.decodeStream(stream);
+                    imagemContatoView.setImageBitmap(resizeImage(this, bitmap, 120, 120));
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                        //imagemContatoView.setRotation(90);
+                    }
+                    imagemUri = data.getData();
+                    imagemContatoView.setImageURI(data.getData());
+
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    if (stream != null)
+                        try {
+                            stream.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                }
+
+            }
+        } else {
+
+            if (resultCode == -1) {
+                if (requestCode == 1) {
+                    imagemUri = data.getData();
+                    imagemContatoView.setImageURI(data.getData());
+                }
+            }
+        }
     }
 
-    public void clicaTirarFoto(View v) {
-        fotoCamera = true;
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, 0);
-    }
+    private static Bitmap resizeImage(CadastrarFragment context, Bitmap bmpOriginal, float newWidth, float newHeight) {
+        Bitmap novoBmp = null;
+        int w = bmpOriginal.getWidth();
+        int h = bmpOriginal.getHeight();
+        float densityFactor = context.getResources().getDisplayMetrics().density;
+        float novoW = newWidth * densityFactor;
+        float novoH = newHeight * densityFactor;
+        //Calcula escala em percentagem do tamanho original para o novo tamanho
+        float scalaW = novoW / w;
+        float scalaH = novoH / h;
+        // Criando uma matrix para manipulação da imagem BitMap
+        Matrix matrix = new Matrix();
+        // Definindo a proporção da escala para o matrix
+        matrix.postScale(scalaW, scalaH);
+        //criando o novo BitMap com o novo tamanho
+        novoBmp = Bitmap.createBitmap(bmpOriginal, 0, 0, w, h, matrix, true);
+        return novoBmp;
 
+    }
 }

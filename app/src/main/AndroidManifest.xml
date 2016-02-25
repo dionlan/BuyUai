@@ -28,7 +28,6 @@
         <activity android:name=".MyListActivity" />
         <activity
             android:name=".ListaUsuario"
-            android:label="Usuários"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".LoginOrSignup"
@@ -45,7 +44,6 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Feed"
-            android:label="Publicações"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".PerfilUsuario"
