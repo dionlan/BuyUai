@@ -48,5 +48,12 @@
     <string name="title_activity_feed">Feed</string>
 
     <string name="toggle">Toggle View</string>
+    <string name="title_activity_perfil_usuario">Perfil do Usuário</string>
+
+    <string name="one">ONE</string>
+    <string name="three">THREE</string>
+    <string name="two">TWO</string>
+
+    <string name="btn_icon_tabs">Only Icon Tabs</string>
 
 </resources>

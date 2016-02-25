@@ -1,13 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".SignUpActivity"
-    tools:showIn="@layout/activity_signup"
-    android:background="#aed0ed">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="fragments.CadastrarFragment"
+    android:background="#91c4f3">
 
     <ScrollView
         android:layout_width="fill_parent"
@@ -15,7 +11,6 @@
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:orientation="vertical"
-            android:background="#aed0ed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -57,6 +52,7 @@
                 android:layout_height="wrap_content"
                 android:text="É um comércio?"
                 android:id="@+id/mySwitch"
+                android:checked="false"
                 android:layout_marginLeft="6dp" />
 
             <EditText

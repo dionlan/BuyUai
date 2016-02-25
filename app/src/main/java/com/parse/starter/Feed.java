@@ -4,18 +4,23 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -33,14 +38,16 @@ public class Feed extends AppCompatActivity {
     ListView listView;
     SimpleAdapter simpleAdapter;
     List<Map<String, String>> publicacaoData = new ArrayList<Map<String, String>>();
+    Toolbar toolbarInferior = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_publicacoes);
-        setSupportActionBar(toolbar);
+        Toolbar toolbarPublicacoes = (Toolbar) findViewById(R.id.toolbar_publicacoes);
+        setSupportActionBar(toolbarPublicacoes);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         listView = (ListView) findViewById(R.id.listaFeeds);
         publicacaoData = new ArrayList<Map<String, String>>();
@@ -82,6 +89,12 @@ public class Feed extends AppCompatActivity {
         }else{
             getMenuInflater().inflate(R.menu.menu_lista_feed_pessoa_juridica, menu);
         }
+
+       /* if(toolbarInferior.isShown()){
+            getMenuInflater().inflate(R.menu.menu_lista_feed_barra_inferior, menu);
+        }*/
+        //menu.add(0, Menu.FIRST, Menu.NONE, "ASDF").setIcon(R.drawable.ic_user);
+        //getMenuInflater().inflate(R.menu.menu_lista_feed_barra_inferior, menu);
         return true;
     }
 
@@ -96,6 +109,11 @@ public class Feed extends AppCompatActivity {
         if (id == R.id.usuarios) {
 
             Intent i = new Intent(getApplicationContext(), ListaUsuario.class);
+            startActivity(i);
+
+        }else if (id == R.id.configUsuario) {
+
+            Intent i = new Intent(getApplicationContext(), PerfilUsuario.class);
             startActivity(i);
 
         }else if (id == R.id.publicar) {
@@ -125,7 +143,6 @@ public class Feed extends AppCompatActivity {
                         intent.setType("image*//*");
                         intent.setAction(Intent.ACTION_GET_CONTENT);
                         startActivityForResult(Intent.createChooser(intent, "Select Contact Image"), 1);
-
                     }
                 });
 
@@ -134,7 +151,6 @@ public class Feed extends AppCompatActivity {
                 lay.addView(buyButton);
 
                 builder.setView(lay);
-
                 builder.setPositiveButton("Enviar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -165,7 +181,6 @@ public class Feed extends AppCompatActivity {
                 builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
                         dialog.cancel();
                     }
                 });

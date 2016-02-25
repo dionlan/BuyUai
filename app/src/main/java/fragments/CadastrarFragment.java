@@ -1,43 +1,36 @@
-package com.parse.starter;
+package fragments;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.support.v7.widget.Toolbar;
+
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
+import com.parse.starter.DispatchActivity;
+import com.parse.starter.Feed;
+import com.parse.starter.R;
+import com.parse.starter.SignUpActivity;
 
-import fragments.CadastrarFragment;
-
-
-public class SignUpActivity extends AppCompatActivity {
-
+public class CadastrarFragment extends Fragment {
 
     private EditText nomeView;
     private EditText nomePFisicaView;
@@ -59,31 +52,32 @@ public class SignUpActivity extends AppCompatActivity {
 
     private Switch mySwitch;
     private TextView switchCpfCnpj;
+    View view = null;
+    public CadastrarFragment() {
+
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_cadastrar);
-/*        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);*/
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        view = inflater.inflate(R.layout.fragment_cadastrar, container, false);
 
         // Set up the signup form.
-        imagemContatoView = (ImageView) findViewById(R.id.imagemContato);
-        nomePFisicaView = (EditText) findViewById(R.id.campoNome);
-        nomeFantasiaPJuridicaView = (EditText) findViewById(R.id.campoNomeFantasia);
-        cpfView = (EditText) findViewById(R.id.campoCpfCnpj);
-        usuarioView = (EditText) findViewById(R.id.campoUsuario);
-        senhaView = (EditText) findViewById(R.id.campoSenha);
-        confirmaSenhaView = (EditText) findViewById(R.id.campoConfirmaSenha);
-        emailView = (EditText) findViewById(R.id.campoEmail);
-        enderecoView = (EditText) findViewById(R.id.campoEndereco);
-        telefoneView = (EditText) findViewById(R.id.campoTelefone);
-        cepView = (EditText) findViewById(R.id.campoCep);
+        imagemContatoView = (ImageView) view.findViewById(R.id.imagemContato);
+        nomePFisicaView = (EditText) view.findViewById(R.id.campoNome);
+        nomeFantasiaPJuridicaView = (EditText) view.findViewById(R.id.campoNomeFantasia);
+        cpfView = (EditText) view.findViewById(R.id.campoCpfCnpj);
+        usuarioView = (EditText) view.findViewById(R.id.campoUsuario);
+        senhaView = (EditText) view.findViewById(R.id.campoSenha);
+        confirmaSenhaView = (EditText) view.findViewById(R.id.campoConfirmaSenha);
+        emailView = (EditText) view.findViewById(R.id.campoEmail);
+        enderecoView = (EditText) view.findViewById(R.id.campoEndereco);
+        telefoneView = (EditText) view.findViewById(R.id.campoTelefone);
+        cepView = (EditText) view.findViewById(R.id.campoCep);
 
-        /**
-         * Verificação se é o cadastro de usuário ou comércio
-         **/
-        mySwitch = (Switch) findViewById(R.id.mySwitch);
+
+        mySwitch = (Switch) view.findViewById(R.id.mySwitch);
 
         //set the switch to ON
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
@@ -92,8 +86,7 @@ public class SignUpActivity extends AppCompatActivity {
             nomeFantasiaPJuridicaView.setVisibility(View.GONE);
 
         }
-        //attach a listener to check for changes in state
-        mySwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+        mySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -101,17 +94,17 @@ public class SignUpActivity extends AppCompatActivity {
                     nomeRepresentantePJView.setVisibility(View.GONE);
                     nomeFantasiaPJuridicaView.setVisibility(View.GONE);
 
-                    nomePFisicaView = (EditText) findViewById(R.id.campoNome);
+                    nomePFisicaView = (EditText) view.findViewById(R.id.campoNome);
                     nomePFisicaView.setVisibility(View.VISIBLE);
                     nomePFisicaView.setHint("Nome");
 
-                    cnpjView = (EditText) findViewById(R.id.campoCpfCnpj);
+                    cnpjView = (EditText) view.findViewById(R.id.campoCpfCnpj);
                     cpfView.setHint("CPF");
 
 
                 } else {
-                    Log.i("AppInfo", "SWITCH PRESSINADO: "+ mySwitch.isChecked());
-                    Toast toast = Toast.makeText(getApplicationContext(), "Comércio selecionado, preencha os campos.", Toast.LENGTH_LONG);
+                    Log.i("AppInfo", "SWITCH PRESSINADO: " + mySwitch.isChecked());
+                    Toast toast = Toast.makeText(getActivity(), "Comércio selecionado, preencha os campos.", Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER, 10, 10);
                     toast.show();
 
@@ -119,24 +112,22 @@ public class SignUpActivity extends AppCompatActivity {
 
                     nomePFisicaView.setVisibility(View.GONE);
 
-                    nomeRepresentantePJView = (EditText) findViewById(R.id.campoNome);
+                    nomeRepresentantePJView = (EditText) view.findViewById(R.id.campoNome);
                     nomeRepresentantePJView.setVisibility(View.VISIBLE);
                     nomeRepresentantePJView.setHint("Nome Representante");
 
                     nomeFantasiaPJuridicaView.setVisibility(View.VISIBLE);
-                    nomeFantasiaPJuridicaView = (EditText) findViewById(R.id.campoNomeFantasia);
+                    nomeFantasiaPJuridicaView = (EditText) view.findViewById(R.id.campoNomeFantasia);
                     nomeFantasiaPJuridicaView.setHint("Nome Fantasia");
 
-                    cnpjView = (EditText) findViewById(R.id.campoCpfCnpj);
+                    cnpjView = (EditText) view.findViewById(R.id.campoCpfCnpj);
                     cnpjView.setHint("CNPJ");
                 }
             }
         });
 
-
-
         // Set up the submit button click handler
-        findViewById(R.id.action_button_signup).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.action_button_signup).setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
 
                 // Validate the sign up data
@@ -200,12 +191,12 @@ public class SignUpActivity extends AppCompatActivity {
 
                 // If there is a validation error, display the error
                 if (validationError) {
-                    Toast.makeText(SignUpActivity.this, validationErrorMessage.toString(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), validationErrorMessage.toString(), Toast.LENGTH_LONG).show();
                     return;
                 }
 
                 // Set up a progress dialog
-                final ProgressDialog dlg = new ProgressDialog(SignUpActivity.this);
+                final ProgressDialog dlg = new ProgressDialog(getActivity());
                 dlg.setTitle("Por favor, aguarde...");
                 dlg.setMessage("Cadastrando... Por favor, aguarde...");
                 dlg.show();
@@ -243,10 +234,10 @@ public class SignUpActivity extends AppCompatActivity {
                         dlg.dismiss();
                         if (e != null) {
                             // Show the error message
-                            Toast.makeText(SignUpActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
                         } else {
                             // Start an intent for the dispatch activity
-                            Intent intent = new Intent(SignUpActivity.this, DispatchActivity.class);
+                            Intent intent = new Intent(getActivity(), DispatchActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
                         }
@@ -254,6 +245,14 @@ public class SignUpActivity extends AppCompatActivity {
                 });
             }
         });
+
+        // Defines the xml file for the fragment
+        //View view = inflater.inflate(R.layout.fragment_cadastrar, container, false);
+        // Setup handles to view objects here
+        // etFoo = (EditText) view.findViewById(R.id.etFoo);
+        //Intent intent = new Intent(getActivity(), SignUpActivity.class);
+        //startActivity(intent);
+        return view;
     }
 
     private boolean isEmpty(EditText etText) {
@@ -286,74 +285,4 @@ public class SignUpActivity extends AppCompatActivity {
         startActivityForResult(intent, 0);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (fotoCamera) {
-            super.onActivityResult(requestCode, resultCode, data);
-            InputStream stream = null;
-            if (requestCode == 0 && resultCode == RESULT_OK) {
-                try {
-                    if (bitmap != null) {
-                        bitmap.recycle();
-                    }
-
-                    stream = getContentResolver().openInputStream(data.getData());
-                    if (stream == null) {
-                        bitmap = (Bitmap) data.getExtras().get("data");
-                    } else {
-                        bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), data.getData());
-                    }
-
-                    bitmap = BitmapFactory.decodeStream(stream);
-                    imagemContatoView.setImageBitmap(resizeImage(this, bitmap, 120, 120));
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                        //imagemContatoView.setRotation(90);
-                    }
-                    imagemUri = data.getData();
-                    imagemContatoView.setImageURI(data.getData());
-
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
-                    if (stream != null)
-                        try {
-                            stream.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                }
-
-            }
-        } else {
-
-            if (resultCode == RESULT_OK) {
-                if (requestCode == 1) {
-                    imagemUri = data.getData();
-                    imagemContatoView.setImageURI(data.getData());
-                }
-            }
-        }
-    }
-
-    private static Bitmap resizeImage(Context context, Bitmap bmpOriginal, float newWidth, float newHeight) {
-        Bitmap novoBmp = null;
-        int w = bmpOriginal.getWidth();
-        int h = bmpOriginal.getHeight();
-        float densityFactor = context.getResources().getDisplayMetrics().density;
-        float novoW = newWidth * densityFactor;
-        float novoH = newHeight * densityFactor;
-        //Calcula escala em percentagem do tamanho original para o novo tamanho
-        float scalaW = novoW / w;
-        float scalaH = novoH / h;
-        // Criando uma matrix para manipulação da imagem BitMap
-        Matrix matrix = new Matrix();
-        // Definindo a proporção da escala para o matrix
-        matrix.postScale(scalaW, scalaH);
-        //criando o novo BitMap com o novo tamanho
-        novoBmp = Bitmap.createBitmap(bmpOriginal, 0, 0, w, h, matrix, true);
-        return novoBmp;
-
-    }
 }

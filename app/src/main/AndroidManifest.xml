@@ -1,36 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.parse.starter">
+    package="com.parse.starter" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-feature android:name="android.hardware.camera" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
-    <application android:name=".SampleApplication"
+    <uses-feature android:name="android.hardware.camera" />
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <application
+        android:name=".SampleApplication"
         android:allowBackup="true"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
-        android:hardwareAccelerated="true"
-        android:largeHeap="true">
+        android:largeHeap="true"
+        android:theme="@style/MyMaterialTheme" >
 
-        <activity android:name=".DispatchActivity"/>
-        <activity android:name=".MyListActivity"/>
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name" >
+        </activity>
+
+        <activity android:name=".DispatchActivity" />
+        <activity android:name=".MyListActivity" />
         <activity
             android:name=".ListaUsuario"
             android:label="Usuários"
             android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity android:name=".LoginOrSignup"
+        <activity
+            android:name=".LoginOrSignup"
             android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".SignUpActivity"
             android:label="Cadastro"
@@ -38,7 +46,23 @@
         <activity
             android:name=".Feed"
             android:label="Publicações"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".PerfilUsuario"
+            android:label="@string/title_activity_perfil_usuario"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".IconTabsActivity"
+            android:label="Icon Tabs"
+            android:parentActivityName=".MainActivity">
+        </activity>
+        <activity
+            android:name=".LoginNovoActivity"
+            android:label="BuyUai. Login"
+            android:parentActivityName=".MainActivity">
+        </activity>
+
     </application>
 
 </manifest>

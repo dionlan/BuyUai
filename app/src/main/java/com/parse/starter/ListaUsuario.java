@@ -42,6 +42,7 @@ public class ListaUsuario extends AppCompatActivity {
         setContentView(R.layout.activity_lista_usuario);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_cadastro);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         if(ParseUser.getCurrentUser().get("seguindo") == null) {
 
