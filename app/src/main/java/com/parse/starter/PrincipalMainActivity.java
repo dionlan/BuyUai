@@ -26,16 +26,22 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+
 import fragments.ContatosFragment;
 import fragments.FeedFragment;
 import fragments.PerfilUsuarioFragment;
-import fragments.ThreeFragment;
 
 public class PrincipalMainActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
     private TabLayout tabLayout;
-    private ViewPager viewPager;
+    public ViewPager viewPager;
+    public int chamaFragmentUsuarios = 0;
+    ViewPagerAdapter adapter = null;
+    int[] tabIcons;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,31 +52,64 @@ public class PrincipalMainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        Log.i("AppInfo", "CREATE CHAMADO");
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
-
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+
         setupTabIcons();
+
+        // When swiping between different sections, select the corresponding
+        // tab. We can also use ActionBar.Tab#select() to do this if we have
+        // a reference to the Tab.
+
     }
 
-    private void setupTabIcons() {
-        int[] tabIcons = {
-                R.drawable.ic_tab_favourite,
-                R.drawable.ic_tab_call,
-                R.drawable.ic_tab_contacts
-        };
+    public void setupTabIcons() {
+            tabIcons = new int[]{
+                    R.drawable.ic_tab_favourite,
+                    R.drawable.ic_tab_contacts
+                    //R.drawable.ic_tab_call
+            };
+            tabLayout.getTabAt(0).setIcon(tabIcons[0]);
+            tabLayout.getTabAt(1).setIcon(tabIcons[1]);
+            //tabLayout.getTabAt(2).setIcon(tabIcons[2]);
+    }
 
-        tabLayout.getTabAt(0).setIcon(tabIcons[0]);
-        tabLayout.getTabAt(1).setIcon(tabIcons[1]);
-        tabLayout.getTabAt(2).setIcon(tabIcons[2]);
+    public void setupTabIcons(int chamaFragmentUsuarios) {
+
+            tabIcons = new int[]{
+                    R.drawable.ic_tab_favourite,
+                    R.drawable.ic_tab_contacts
+            };
+            tabLayout.getTabAt(0).setIcon(tabIcons[0]);
+            tabLayout.getTabAt(1).setIcon(tabIcons[1]);
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter = new ViewPagerAdapter(getSupportFragmentManager());
+
         adapter.addFrag(new FeedFragment(), "FEED");
-        adapter.addFrag(new ContatosFragment(), "CONTATOS");
+
         adapter.addFrag(new PerfilUsuarioFragment(), "PERFIL DO USUÁRIO");
+
+        viewPager.setAdapter(adapter);
+    }
+
+    public void setupViewPager(ViewPager viewPager, int usuarioSelecionado) {
+
+        Log.i("AppInfo", "ABA USUARIO SELECIONADA!");
+        adapter = new ViewPagerAdapter(getSupportFragmentManager());
+
+        Log.i("AppInfo", "MONTA FEED!");
+        adapter.addFrag(new FeedFragment(), "FEED");
+
+
+
+        Log.i("AppInfo", "MONTA CONTATOS!");
+        adapter.addFrag(new ContatosFragment(), "CONTATOS");
+
         viewPager.setAdapter(adapter);
     }
 
@@ -93,6 +132,7 @@ public class PrincipalMainActivity extends AppCompatActivity {
         }
 
         public void addFrag(Fragment fragment, String title) {
+
             mFragmentList.add(fragment);
             mFragmentTitleList.add(title);
         }
@@ -124,7 +164,6 @@ public class PrincipalMainActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         if (id == R.id.publicar) {
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -193,10 +232,6 @@ public class PrincipalMainActivity extends AppCompatActivity {
                 }
             });
             builder.show();
-            return true;
-        }else if (id == R.id.logout) {
-            ParseUser.getCurrentUser().logOut();
-            startActivity(new Intent(PrincipalMainActivity.this, DispatchActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);

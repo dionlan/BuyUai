@@ -41,5 +41,6 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:background="#91c4f3" />
+        android:background="#91c4f3"
+        android:clickable="false" />
 </RelativeLayout>

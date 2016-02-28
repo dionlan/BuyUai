@@ -108,7 +108,7 @@ public class CadastrarFragment extends Fragment {
 
                 } else {
                     Log.i("AppInfo", "SWITCH PRESSINADO: " + mySwitch.isChecked());
-                    Toast toast = Toast.makeText(getActivity(), "Comércio selecionado, preencha os campos.", Toast.LENGTH_LONG);
+                    Toast toast = Toast.makeText(getActivity().getApplicationContext(), "Comércio selecionado, preencha os campos.", Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER, 10, 10);
                     toast.show();
 
@@ -195,12 +195,12 @@ public class CadastrarFragment extends Fragment {
 
                 // If there is a validation error, display the error
                 if (validationError) {
-                    Toast.makeText(getActivity(), validationErrorMessage.toString(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity().getApplicationContext(), validationErrorMessage.toString(), Toast.LENGTH_LONG).show();
                     return;
                 }
 
                 // Set up a progress dialog
-                final ProgressDialog dlg = new ProgressDialog(getActivity());
+                final ProgressDialog dlg = new ProgressDialog(getActivity().getApplicationContext());
                 dlg.setTitle("Por favor, aguarde...");
                 dlg.setMessage("Cadastrando... Por favor, aguarde...");
                 dlg.show();
@@ -238,10 +238,10 @@ public class CadastrarFragment extends Fragment {
                         dlg.dismiss();
                         if (e != null) {
                             // Show the error message
-                            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity().getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                         } else {
                             // Start an intent for the dispatch activity
-                            Intent intent = new Intent(getActivity(), DispatchActivity.class);
+                            Intent intent = new Intent(getActivity().getApplicationContext(), DispatchActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
                         }

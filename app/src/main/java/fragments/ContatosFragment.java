@@ -1,51 +1,48 @@
-package com.parse.starter;
+package fragments;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.text.InputType;
+import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CheckedTextView;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
+
 import com.parse.FindCallback;
 import com.parse.ParseACL;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
+import com.parse.starter.PrincipalMainActivity;
+import com.parse.starter.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListaUsuario extends AppCompatActivity {
+public class ContatosFragment extends Fragment {
 
     ArrayList<String> usuarios;
     ArrayAdapter arrayAdapter;
+    View view = null;
+
+    public ContatosFragment() {
+        // Required empty public constructor
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_lista_usuario);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_cadastro);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Log.i("AppInfo", "CONTATOS FRAGMENT");
 
-        if(ParseUser.getCurrentUser().get("seguindo") == null) {
+        view = inflater.inflate(R.layout.fragment_contatos, container, false);
+
+        if (ParseUser.getCurrentUser().get("seguindo") == null) {
 
             List<String> listaVazia = new ArrayList<String>();
             ParseUser.getCurrentUser().put("seguindo", listaVazia);
@@ -59,9 +56,9 @@ public class ListaUsuario extends AppCompatActivity {
 
         usuarios = new ArrayList<String>();
 
-        arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_checked, usuarios);
+        arrayAdapter = new ArrayAdapter(getActivity().getApplicationContext(), android.R.layout.simple_list_item_checked, usuarios);
 
-        final ListView listView = (ListView) findViewById(R.id.listaUsuarios);
+        final ListView listView = (ListView) view.findViewById(R.id.listaUsuarios);
         listView.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
         listView.setAdapter(arrayAdapter);
 
@@ -116,14 +113,8 @@ public class ListaUsuario extends AppCompatActivity {
                 }
 
             }
+
         });
-
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_lista_usuarios, menu);
-        return true;
+        return view;
     }
 }

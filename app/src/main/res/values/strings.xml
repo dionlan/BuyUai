@@ -55,5 +55,10 @@
     <string name="two">TWO</string>
 
     <string name="btn_icon_tabs">Only Icon Tabs</string>
+    <string name="facebook_app_id">1045621708814569</string>
+    <string name="title_activity_my_application">MyApplication</string>
 
+    <string name="title_section1">R n B</string>
+    <string name="title_section2">Reggae</string>
+    <string name="title_section3">Rap</string>
 </resources>

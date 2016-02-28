@@ -74,7 +74,7 @@ public class FeedFragment extends Fragment {
 
         listView = (ListView) view.findViewById(R.id.listaFeeds);
         publicacaoData = new ArrayList<Map<String, String>>();
-        simpleAdapter = new SimpleAdapter(getActivity(), publicacaoData, android.R.layout.simple_list_item_2, new String[]{"username", "detalheProduto"}, new int[]{android.R.id.text1, android.R.id.text2});
+        simpleAdapter = new SimpleAdapter(getActivity().getApplicationContext(), publicacaoData, android.R.layout.simple_list_item_2, new String[]{"username", "detalheProduto"}, new int[]{android.R.id.text1, android.R.id.text2});
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Publicacao");
         query.whereContainedIn("username", ParseUser.getCurrentUser().getList("seguindo"));
@@ -113,21 +113,21 @@ public class FeedFragment extends Fragment {
 
         if (id == R.id.publicar) {
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity().getApplicationContext());
 
             builder.setTitle("Enviar uma oferta");
-            final EditText descricao = new EditText(getActivity());
+            final EditText descricao = new EditText(getActivity().getApplicationContext());
             descricao.setHint("Descrição");
 
-            final EditText preco = new EditText(getActivity());
+            final EditText preco = new EditText(getActivity().getApplicationContext());
             preco.setHint("Preço");
             preco.setInputType(InputType.TYPE_NUMBER_VARIATION_NORMAL);
 
-            LinearLayout lay = new LinearLayout(getActivity());
+            LinearLayout lay = new LinearLayout(getActivity().getApplicationContext());
             lay.setOrientation(LinearLayout.VERTICAL);
 
 
-            Button buyButton = new Button(getActivity());
+            Button buyButton = new Button(getActivity().getApplicationContext());
             buyButton.setText("Tirar Foto");
 
             buyButton.setOnClickListener(new View.OnClickListener() {
@@ -164,10 +164,10 @@ public class FeedFragment extends Fragment {
                         public void done(ParseException e) {
                             if (e == null) {
 
-                                Toast.makeText(getActivity(), "Sua publicação foi enviada.", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getActivity().getApplicationContext(), "Sua publicação foi enviada.", Toast.LENGTH_LONG).show();
                             } else {
                                 Log.i("AppInfo", "ERRO: "+e);
-                                Toast.makeText(getActivity(), "Sua publicação não pode ser enviada - por favor tente novamente.", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getActivity().getApplicationContext(), "Sua publicação não pode ser enviada - por favor tente novamente.", Toast.LENGTH_LONG).show();
                             }
                         }
                     });
@@ -183,7 +183,7 @@ public class FeedFragment extends Fragment {
             return true;
         }else if (id == R.id.logout) {
             ParseUser.getCurrentUser().logOut();
-            startActivity(new Intent(getActivity(), DispatchActivity.class));
+            startActivity(new Intent(getActivity().getApplicationContext(), DispatchActivity.class));
             return true;
         }
 

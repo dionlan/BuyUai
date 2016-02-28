@@ -1,38 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.parse.starter" >
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.parse.starter">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-feature android:name="android.hardware.camera" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-sdk tools:overrideLibrary="com.facebook"/>
 
     <application
-        android:name=".SampleApplication"
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
-        android:theme="@style/MyMaterialTheme" >
+        android:theme="@style/MyMaterialTheme">
+            <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
         <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name" >
-        </activity>
-        <activity android:name=".DispatchActivity" />
-        <activity android:name=".MyListActivity" />
-        <activity
-            android:name=".ListaUsuario"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".LoginOrSignup"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:name=".PrincipalMainActivity"
+            android:label="BuyUai. Bom.">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".PerfilUsuario"
+            android:label="@string/title_activity_perfil_usuario"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".PrincipalMainActivity" >
+        </activity>
+        <activity android:name=".DispatchActivity" />
+        <activity android:name=".MyListActivity" />
+        <activity android:name=".ListaUsuario"
+            android:label="BuyUai. Bom."
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".PrincipalMainActivity" >
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"></activity>
         <activity
             android:name=".SignUpActivity"
             android:label="Cadastro"
@@ -41,19 +53,18 @@
             android:name=".Feed"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".PerfilUsuario"
-            android:label="@string/title_activity_perfil_usuario"
-            android:theme="@style/AppTheme.NoActionBar" >
-        </activity>
-        <activity
-            android:name=".PrincipalMainActivity"
-            android:label="BuyUai. Bom."
-            android:parentActivityName=".MainActivity">
-        </activity>
-        <activity
             android:name=".LoginNovoActivity"
-            android:label="BuyUai. Login"
-            android:parentActivityName=".MainActivity">
+            android:label="BuyUai. Login">
         </activity>
+
+        <activity
+            android:name=".LoginOrSignup"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name" />
     </application>
 </manifest>
