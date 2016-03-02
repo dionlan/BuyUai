@@ -61,4 +61,9 @@
     <string name="title_section1">R n B</string>
     <string name="title_section2">Reggae</string>
     <string name="title_section3">Rap</string>
+
+    <string name="date_label_set">Press the button to set the date</string>
+    <string name="date_button_set">Set Date</string>
+    <string name="date_view_set">The Date is: </string>
+    <string name="date_selected"></string>
 </resources>

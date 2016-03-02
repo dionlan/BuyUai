@@ -118,7 +118,7 @@ public class CadastrarFragment extends Fragment {
 
                     razaoSocialPJView = (EditText) view.findViewById(R.id.campoNome);
                     razaoSocialPJView.setVisibility(View.VISIBLE);
-                    razaoSocialPJView.setHint("Nome Representante");
+                    razaoSocialPJView.setHint("Razão Social");
 
                     nomeFantasiaPJuridicaView.setVisibility(View.VISIBLE);
                     nomeFantasiaPJuridicaView = (EditText) view.findViewById(R.id.campoNomeFantasia);

@@ -37,6 +37,7 @@
         </activity>
         <activity android:name=".DispatchActivity" />
         <activity android:name=".MyListActivity" />
+        <activity android:name=".DataPublicacao" />
         <activity android:name=".ListaUsuario"
             android:label="BuyUai. Bom."
             android:theme="@style/AppTheme.NoActionBar"

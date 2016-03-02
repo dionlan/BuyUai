@@ -1,6 +1,8 @@
 package com.parse.starter;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,31 +19,36 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-
-import fragments.ContatosFragment;
 import fragments.FeedFragment;
+import fragments.PerfilComercianteFragment;
 import fragments.PerfilUsuarioFragment;
 
 public class PrincipalMainActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
-    private TabLayout tabLayout;
+    public TabLayout tabLayout;
     public ViewPager viewPager;
-    public int chamaFragmentUsuarios = 0;
     ViewPagerAdapter adapter = null;
     int[] tabIcons;
 
-
+    private Calendar calendar = null;
+    private int year, month, day;
+    TextView dataValidadeTextView;
+    StringBuilder dataValidade = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,15 +67,18 @@ public class PrincipalMainActivity extends AppCompatActivity {
 
         setupTabIcons();
 
-        // When swiping between different sections, select the corresponding
-        // tab. We can also use ActionBar.Tab#select() to do this if we have
-        // a reference to the Tab.
+        dataValidadeTextView = new TextView(this);
+        calendar = Calendar.getInstance();
+        year = calendar.get(Calendar.YEAR);
+        month = calendar.get(Calendar.MONTH);
+        day = calendar.get(Calendar.DAY_OF_MONTH);
+        showDate(year, month + 1, day);
 
     }
 
     public void setupTabIcons() {
             tabIcons = new int[]{
-                    R.drawable.ic_tab_favourite,
+                    R.drawable.feed,
                     R.drawable.ic_tab_contacts
                     //R.drawable.ic_tab_call
             };
@@ -77,39 +87,14 @@ public class PrincipalMainActivity extends AppCompatActivity {
             //tabLayout.getTabAt(2).setIcon(tabIcons[2]);
     }
 
-    public void setupTabIcons(int chamaFragmentUsuarios) {
-
-            tabIcons = new int[]{
-                    R.drawable.ic_tab_favourite,
-                    R.drawable.ic_tab_contacts
-            };
-            tabLayout.getTabAt(0).setIcon(tabIcons[0]);
-            tabLayout.getTabAt(1).setIcon(tabIcons[1]);
-    }
-
     private void setupViewPager(ViewPager viewPager) {
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
-
         adapter.addFrag(new FeedFragment(), "FEED");
-
-        adapter.addFrag(new PerfilUsuarioFragment(), "PERFIL DO USUÁRIO");
-
-        viewPager.setAdapter(adapter);
-    }
-
-    public void setupViewPager(ViewPager viewPager, int usuarioSelecionado) {
-
-        Log.i("AppInfo", "ABA USUARIO SELECIONADA!");
-        adapter = new ViewPagerAdapter(getSupportFragmentManager());
-
-        Log.i("AppInfo", "MONTA FEED!");
-        adapter.addFrag(new FeedFragment(), "FEED");
-
-
-
-        Log.i("AppInfo", "MONTA CONTATOS!");
-        adapter.addFrag(new ContatosFragment(), "CONTATOS");
-
+        if (ParseUser.getCurrentUser().get("isComercio").equals(false)) {
+            adapter.addFrag(new PerfilUsuarioFragment(), "PERFIL DO COMERCIANTE");
+        }else{
+            adapter.addFrag(new PerfilComercianteFragment(), "PERFIL DO COMERCIANTE");
+        }
         viewPager.setAdapter(adapter);
     }
 
@@ -160,9 +145,7 @@ public class PrincipalMainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
         if (id == R.id.publicar) {
 
@@ -176,7 +159,16 @@ public class PrincipalMainActivity extends AppCompatActivity {
             preco.setHint("Preço");
             preco.setInputType(InputType.TYPE_NUMBER_VARIATION_NORMAL);
 
-            LinearLayout lay = new LinearLayout(this);
+            dataValidadeTextView.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                @SuppressWarnings("deprecation")
+                public void onClick(View v) {
+                    showDialog(999);
+                }
+            });
+
+            final LinearLayout lay = new LinearLayout(this);
             lay.setOrientation(LinearLayout.VERTICAL);
 
             Button buyButton = new Button(this);
@@ -189,34 +181,36 @@ public class PrincipalMainActivity extends AppCompatActivity {
                     Intent intent = new Intent();
                     intent.setType("image*//*");
                     intent.setAction(Intent.ACTION_GET_CONTENT);
-                    startActivityForResult(Intent.createChooser(intent, "Select Contact Image"), 1);
+                    startActivityForResult(Intent.createChooser(intent, "Seleciona uma imagem..."), 1);
                 }
             });
 
             lay.addView(descricao);
             lay.addView(preco);
+            lay.addView(dataValidadeTextView);
             lay.addView(buyButton);
-
             builder.setView(lay);
+
             builder.setPositiveButton("Enviar", new DialogInterface.OnClickListener() {
                 @Override
-                public void onClick(DialogInterface dialog, int which) {
+                public void onClick(final DialogInterface dialog, int which) {
 
                     ParseObject publica = new ParseObject("Publicacao");
                     publica.put("username", ParseUser.getCurrentUser().getUsername());
                     publica.put("descricao", String.valueOf(descricao.getText()));
                     publica.put("preco", String.valueOf(preco.getText()));
+                    publica.put("validadeOferta", String.valueOf(dataValidade));
 
                     //detalhe = descrição e preço
                     String detalheProduto = String.valueOf(descricao.getText()) + " - " + String.valueOf(preco.getText());
                     publica.put("detalheProduto", detalheProduto);
-
                     publica.saveInBackground(new SaveCallback() {
                         @Override
                         public void done(ParseException e) {
                             if (e == null) {
 
                                 Toast.makeText(getApplicationContext(), "Sua publicação foi enviada.", Toast.LENGTH_LONG).show();
+                                lay.removeView(dataValidadeTextView);
                             } else {
                                 Log.i("AppInfo", "ERRO: " + e);
                                 Toast.makeText(getApplicationContext(), "Sua publicação não pode ser enviada - por favor tente novamente.", Toast.LENGTH_LONG).show();
@@ -232,8 +226,42 @@ public class PrincipalMainActivity extends AppCompatActivity {
                 }
             });
             builder.show();
+
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressWarnings("deprecation")
+    public void setDate(View view) {
+        showDialog(999);
+        Toast.makeText(getApplicationContext(), "ca", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        // TODO Auto-generated method stub
+        if (id == 999) {
+            return new DatePickerDialog(this, myDateListener, year, month, day);
+        }
+        return null;
+    }
+
+    private DatePickerDialog.OnDateSetListener myDateListener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker arg0, int arg1, int arg2, int arg3) {
+            // TODO Auto-generated method stub
+            // arg1 = year
+            // arg2 = month
+            // arg3 = day
+            showDate(arg1, arg2+1, arg3);
+        }
+    };
+
+    private void showDate(int year, int month, int day) {
+        dataValidadeTextView.setTextSize(16);
+        dataValidade = new StringBuilder().append(day).append("/").append(month).append("/").append(year);
+        dataValidadeTextView.setText("Data de validade da oferta: " + dataValidade);
+
     }
 }
