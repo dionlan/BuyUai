@@ -101,5 +101,16 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Usuário Joãozinho da Silva"
             android:id="@+id/nomeUsuario" />
+
+        <GridView
+            android:id="@+id/gridview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:verticalSpacing="0dp"
+            android:horizontalSpacing="0dp"
+            android:stretchMode="columnWidth"
+            android:scrollbars="none"
+            android:numColumns="2"
+            android:background="#ffffff" />
     </LinearLayout>
 </RelativeLayout>

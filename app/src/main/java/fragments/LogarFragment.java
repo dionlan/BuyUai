@@ -4,24 +4,11 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import com.facebook.AccessToken;
-import com.facebook.AccessTokenTracker;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
-import com.facebook.Profile;
-import com.facebook.ProfileTracker;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -34,32 +21,6 @@ public class LogarFragment extends Fragment {
     private EditText passwordView;
     View view = null;
 
-    private TextView mTextDetails = null;
-    private ProfileTracker mProfileTracker = null;
-    private AccessTokenTracker mTokenTracker = null;
-    private CallbackManager mCallbackManager = null;
-
-    private FacebookCallback<LoginResult> mFacebookCallback = new FacebookCallback<LoginResult>() {
-        @Override
-        public void onSuccess(LoginResult loginResult) {
-            Log.d("AppInfo", "onSuccess");
-            AccessToken accessToken = loginResult.getAccessToken();
-            Profile profile = Profile.getCurrentProfile();
-            mTextDetails.setText(constructWelcomeMessage(profile));
-
-        }
-
-        @Override
-        public void onCancel() {
-            Log.d("AppInfo", "onCancel");
-        }
-
-        @Override
-        public void onError(FacebookException error) {
-            Log.d("AppInfo", "onError " + error);
-        }
-    };
-
     public LogarFragment() {
         // Required empty public constructor
     }
@@ -67,16 +28,6 @@ public class LogarFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
-
-        mCallbackManager = CallbackManager.Factory.create();
-        setupTokenTracker();
-        setupProfileTracker();
-
-        mTokenTracker.startTracking();
-        mProfileTracker.startTracking();
-
     }
 
     @Override
@@ -149,71 +100,5 @@ public class LogarFragment extends Fragment {
         } else {
             return true;
         }
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState){
-        setupTextDetails(view);
-        setupLoginButton(view);
-    }
-
-    @Override
-    public void onResume(){
-        super.onResume();
-        Profile profile = Profile.getCurrentProfile();
-        mTextDetails.setText(constructWelcomeMessage(profile));
-    }
-
-    @Override
-    public void onStop(){
-        super.onStop();
-        mTokenTracker.stopTracking();
-        mProfileTracker.stopTracking();
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        mCallbackManager.onActivityResult(requestCode, resultCode, data);
-    }
-
-    private void setupTextDetails(View view) {
-        mTextDetails = (TextView) view.findViewById(R.id.text_details);
-    }
-
-    private void setupTokenTracker() {
-        mTokenTracker = new AccessTokenTracker() {
-            @Override
-            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
-                Log.d("AppInfo", "" + currentAccessToken);
-            }
-        };
-    }
-
-    private void setupProfileTracker() {
-        mProfileTracker = new ProfileTracker() {
-            @Override
-            protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
-                Log.d("AppInfo", "" + currentProfile);
-                mTextDetails.setText(constructWelcomeMessage(currentProfile));
-            }
-        };
-    }
-
-    private void setupLoginButton(View view) {
-        LoginButton mButtonLogin = (LoginButton) view.findViewById(R.id.login_button);
-        mButtonLogin.setFragment(this);
-        mButtonLogin.setCompoundDrawables(null, null, null, null);
-        mButtonLogin.setReadPermissions("user_friends");
-        mButtonLogin.registerCallback(mCallbackManager, mFacebookCallback);
-    }
-
-        private String constructWelcomeMessage(Profile profile) {
-        StringBuffer stringBuffer = new StringBuffer();
-        if (profile != null) {
-            stringBuffer.append("Welcome " + profile.getName());
-            Log.i("AppInfo", "Nome do usuario: " +profile.getName());
-        }
-        return stringBuffer.toString();
     }
 }

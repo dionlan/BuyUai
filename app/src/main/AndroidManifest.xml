@@ -3,49 +3,65 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.parse.starter">
 
+    <uses-sdk tools:overrideLibrary="com.facebook" />
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <uses-feature android:name="android.hardware.camera" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-sdk tools:overrideLibrary="com.facebook"/>
 
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label=""
         android:largeHeap="true"
         android:theme="@style/MyMaterialTheme">
-            <meta-data
+        <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
+
         <activity
             android:name=".PrincipalMainActivity"
-            android:label="BuyUai. Bom.">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:label="" />
+
+        <activity android:name=".DetailsActivity"/>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
         <activity
             android:name=".PerfilUsuario"
             android:label="@string/title_activity_perfil_usuario"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".PrincipalMainActivity" >
-        </activity>
+            android:parentActivityName=".PrincipalMainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".DispatchActivity" />
         <activity android:name=".MyListActivity" />
         <activity android:name=".DataPublicacao" />
-        <activity android:name=".ListaUsuario"
-            android:label="BuyUai. Bom."
-            android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".PrincipalMainActivity" >
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity
+            android:name=".MapsActivity"
+            android:label="@string/title_activity_maps">
+
         </activity>
         <activity
+            android:name=".ListaUsuario"
+            android:label=""
+            android:parentActivityName=".PrincipalMainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".MainActivity"
-            android:label="@string/app_name"></activity>
+            android:label="@string/app_name" />
         <activity
             android:name=".SignUpActivity"
             android:label="Cadastro"
@@ -55,17 +71,20 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".LoginNovoActivity"
-            android:label="BuyUai. Login">
-        </activity>
+            android:label="BuyUai. Login" >
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
 
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
         <activity
             android:name=".LoginOrSignup"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="com.facebook.FacebookActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name" />
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
     </application>
 </manifest>

@@ -42,8 +42,16 @@ public class ListaUsuario extends AppCompatActivity {
         setContentView(R.layout.activity_lista_usuario);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_cadastro);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            toolbar.setNavigationIcon(R.drawable.ic_action_back_1);
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onBackPressed();
+                }
+            });
+        }
 
         if(ParseUser.getCurrentUser().get("seguindo") == null) {
 
@@ -118,12 +126,5 @@ public class ListaUsuario extends AppCompatActivity {
             }
         });
 
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_lista_usuarios, menu);
-        return true;
     }
 }

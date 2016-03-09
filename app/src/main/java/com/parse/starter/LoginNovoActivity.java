@@ -38,7 +38,7 @@ public class LoginNovoActivity extends AppCompatActivity {
 
     private void setupTabIcons() {
         int[] tabIcons = {
-                R.drawable.ic_tab_contacts,
+                R.drawable.ic_user1,
                 R.drawable.ic_tab_favourite
         };
 

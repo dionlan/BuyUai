@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -78,10 +79,11 @@ public class PrincipalMainActivity extends AppCompatActivity {
 
     public void setupTabIcons() {
             tabIcons = new int[]{
-                    R.drawable.feed,
-                    R.drawable.ic_tab_contacts
+                    R.drawable.feed1,
+                    R.drawable.ic_user1
                     //R.drawable.ic_tab_call
             };
+
             tabLayout.getTabAt(0).setIcon(tabIcons[0]);
             tabLayout.getTabAt(1).setIcon(tabIcons[1]);
             //tabLayout.getTabAt(2).setIcon(tabIcons[2]);
@@ -260,7 +262,7 @@ public class PrincipalMainActivity extends AppCompatActivity {
 
     private void showDate(int year, int month, int day) {
         dataValidadeTextView.setTextSize(16);
-        dataValidade = new StringBuilder().append(day).append("/").append(month).append("/").append(year);
+        dataValidade = new StringBuilder().append(day).append("/").append(month+1).append("/").append(year);
         dataValidadeTextView.setText("Data de validade da oferta: " + dataValidade);
 
     }

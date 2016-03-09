@@ -17,27 +17,35 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.Profile;
+import com.facebook.ProfileTracker;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 import com.parse.starter.DispatchActivity;
 import com.parse.starter.R;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
 public class CadastrarFragment extends Fragment {
 
-    private EditText nomeView;
     private EditText nomePFisicaView;
     private EditText razaoSocialPJView;
     private EditText nomeFantasiaPJuridicaView;
@@ -50,14 +58,41 @@ public class CadastrarFragment extends Fragment {
     private EditText enderecoView;
     private EditText telefoneView;
     private EditText cepView;
+    private Button botaoLoginFaceView;
+    private TextView textoNomeUsuarioFaceView;
     boolean fotoCamera;
     private Bitmap bitmap;
     ImageView imagemContatoView;
     Uri imagemUri = Uri.parse("android.resource://com.parse.starter/drawable/ic_user.png");
 
     private Switch mySwitch;
-    private TextView switchCpfCnpj;
     View view = null;
+    private TextView mTextDetails = null;
+
+    private ProfileTracker mProfileTracker = null;
+    private AccessTokenTracker mTokenTracker = null;
+    private CallbackManager mCallbackManager = null;
+
+    private FacebookCallback<LoginResult> mFacebookCallback = new FacebookCallback<LoginResult>() {
+        @Override
+        public void onSuccess(LoginResult loginResult) {
+            Log.d("AppInfo", "onSuccess");
+            AccessToken accessToken = loginResult.getAccessToken();
+            Profile profile = Profile.getCurrentProfile();
+            mTextDetails.setText(constructWelcomeMessage(profile));
+        }
+
+        @Override
+        public void onCancel() {
+            Log.d("AppInfo", "onCancel");
+        }
+
+        @Override
+        public void onError(FacebookException error) {
+            Log.d("AppInfo", "onError " + error);
+        }
+    };
+
     public CadastrarFragment() {
 
     }
@@ -65,8 +100,16 @@ public class CadastrarFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        view = inflater.inflate(R.layout.fragment_cadastrar, container, false);
+        FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
 
+        mCallbackManager = CallbackManager.Factory.create();
+        setupTokenTracker();
+        setupProfileTracker();
+
+        mTokenTracker.startTracking();
+        mProfileTracker.startTracking();
+
+        view = inflater.inflate(R.layout.fragment_cadastrar, container, false);
         // Set up the signup form.
         imagemContatoView = (ImageView) view.findViewById(R.id.imagemContato);
         nomePFisicaView = (EditText) view.findViewById(R.id.campoNome);
@@ -79,7 +122,8 @@ public class CadastrarFragment extends Fragment {
         enderecoView = (EditText) view.findViewById(R.id.campoEndereco);
         telefoneView = (EditText) view.findViewById(R.id.campoTelefone);
         cepView = (EditText) view.findViewById(R.id.campoCep);
-
+        botaoLoginFaceView = (Button) view.findViewById(R.id.login_button_facebook);
+        textoNomeUsuarioFaceView = (TextView) view.findViewById(R.id.text_details_nome_face);
 
         mySwitch = (Switch) view.findViewById(R.id.mySwitch);
 
@@ -95,6 +139,13 @@ public class CadastrarFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (!isChecked) {
+
+                    botaoLoginFaceView = (Button) view.findViewById(R.id.login_button_facebook);
+                    botaoLoginFaceView.setVisibility(View.VISIBLE);
+
+                    textoNomeUsuarioFaceView = (TextView) view.findViewById(R.id.text_details_nome_face);
+                    textoNomeUsuarioFaceView.setVisibility(View.VISIBLE);
+
                     razaoSocialPJView.setVisibility(View.GONE);
                     nomeFantasiaPJuridicaView.setVisibility(View.GONE);
 
@@ -105,6 +156,8 @@ public class CadastrarFragment extends Fragment {
                     cnpjView = (EditText) view.findViewById(R.id.campoCpfCnpj);
                     cpfView.setHint("CPF");
 
+                    enderecoView.setVisibility(View.GONE);
+
 
                 } else {
                     Log.i("AppInfo", "SWITCH PRESSINADO: " + mySwitch.isChecked());
@@ -113,6 +166,9 @@ public class CadastrarFragment extends Fragment {
                     toast.show();
 
                     //Toast.makeText(getApplicationContext(), "Comércio selecionado, preencha os campos.", Toast.LENGTH_LONG).show();
+
+                    botaoLoginFaceView.setVisibility(View.GONE);
+                    textoNomeUsuarioFaceView.setVisibility(View.GONE);
 
                     nomePFisicaView.setVisibility(View.GONE);
 
@@ -126,6 +182,8 @@ public class CadastrarFragment extends Fragment {
 
                     cnpjView = (EditText) view.findViewById(R.id.campoCpfCnpj);
                     cnpjView.setHint("CNPJ");
+
+                    enderecoView.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -300,6 +358,9 @@ public class CadastrarFragment extends Fragment {
         Context context = null;
         Activity activity = (Activity) context;
 
+        super.onActivityResult(requestCode, resultCode, data);
+        mCallbackManager.onActivityResult(requestCode, resultCode, data);
+
         if (fotoCamera) {
             super.onActivityResult(requestCode, resultCode, data);
             InputStream stream = null;
@@ -367,5 +428,65 @@ public class CadastrarFragment extends Fragment {
         novoBmp = Bitmap.createBitmap(bmpOriginal, 0, 0, w, h, matrix, true);
         return novoBmp;
 
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState){
+        setupTextDetails(view);
+        setupLoginButton(view);
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        Profile profile = Profile.getCurrentProfile();
+        mTextDetails.setText(constructWelcomeMessage(profile));
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        mTokenTracker.stopTracking();
+        mProfileTracker.stopTracking();
+    }
+
+    private void setupTextDetails(View view) {
+        mTextDetails = (TextView) view.findViewById(R.id.text_details_nome_face);
+    }
+
+    private void setupTokenTracker() {
+        mTokenTracker = new AccessTokenTracker() {
+            @Override
+            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
+                Log.d("AppInfo", "" + currentAccessToken);
+            }
+        };
+    }
+
+    private void setupProfileTracker() {
+        mProfileTracker = new ProfileTracker() {
+            @Override
+            protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
+                Log.d("AppInfo", "" + currentProfile);
+                mTextDetails.setText(constructWelcomeMessage(currentProfile));
+            }
+        };
+    }
+
+    private void setupLoginButton(View view) {
+        LoginButton mButtonLogin = (LoginButton) view.findViewById(R.id.login_button_facebook);
+        mButtonLogin.setFragment(this);
+        mButtonLogin.setCompoundDrawables(null, null, null, null);
+        mButtonLogin.setReadPermissions("user_friends");
+        mButtonLogin.registerCallback(mCallbackManager, mFacebookCallback);
+    }
+
+    private String constructWelcomeMessage(Profile profile) {
+        StringBuffer stringBuffer = new StringBuffer();
+        if (profile != null) {
+            stringBuffer.append("Welcome " + profile.getName());
+            Log.i("AppInfo", "Nome do usuario: " +profile.getName());
+        }
+        return stringBuffer.toString();
     }
 }

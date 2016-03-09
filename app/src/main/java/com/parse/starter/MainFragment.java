@@ -86,13 +86,13 @@ public class MainFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
 
-        LoginButton loginButton = (LoginButton) view.findViewById(R.id.login_button);
+        LoginButton loginButton = (LoginButton) view.findViewById(R.id.login_button_facebook);
         loginButton.setReadPermissions("user_friends");
         loginButton.setFragment(this);
 
         loginButton.registerCallback(mCallBackManager, mCallback);
 
-        mTextDetails = (TextView) view.findViewById(R.id.text_details);
+        mTextDetails = (TextView) view.findViewById(R.id.text_details_nome_face);
     }
 
     @Override

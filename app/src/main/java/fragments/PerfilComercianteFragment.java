@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -23,12 +25,15 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
+import com.parse.starter.DetailsActivity;
 import com.parse.starter.DispatchActivity;
+import com.parse.starter.ImageItem;
 import com.parse.starter.ListaUsuario;
 import com.parse.starter.R;
 
 import org.json.JSONArray;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -40,17 +45,18 @@ public class PerfilComercianteFragment extends Fragment {
     List<Map<String, String>> publicacaoData = null;
     GridView gridview = null;
     SimpleAdapter simpleAdapter = null;
-
-
-    public PerfilComercianteFragment() {
-        // Required empty public constructor
-    }
+    Bitmap bitmap = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //getSupportFragmentManager().addOnBackStackChangedListener(this);
+        //Handle when activity is recreated like on orientation Change
+        //shouldDisplayHomeUp();
+
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -61,7 +67,35 @@ public class PerfilComercianteFragment extends Fragment {
         gridview = (GridView)view.findViewById(R.id.gridview);
         gridview.setHorizontalSpacing(5);
         gridview.setVerticalSpacing(5);
-        gridview.setAdapter(new MyAdapter());
+        final MyAdapter m = new MyAdapter();
+        gridview.setAdapter(m);
+
+        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+
+            public void onItemClick(AdapterView<?> parent, View v,
+                                    int position, long id) {
+
+                //ImageItem item = (ImageItem) parent.getItemAtPosition(position);
+                //Create intent
+                Intent intent = new Intent(getActivity(), DetailsActivity.class);
+
+                bitmap = BitmapFactory.decodeResource(getResources(), m.items.get(position).drawableId);
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos);
+                byte[] b = baos.toByteArray();
+
+                intent.putExtra("image", b);
+                intent.putExtra("title", String.valueOf(m.items.get(position).name));
+
+
+                //intent.putExtra("image", m.items.get(position).drawableId);
+
+                //Start details activity
+                startActivity(intent);
+
+            }
+        });
 
         publicacaoData = new ArrayList<Map<String, String>>();
         simpleAdapter = new SimpleAdapter(getActivity().getApplicationContext(), publicacaoData, android.R.layout.simple_list_item_2, new String[]{"username", "detalheProduto"}, new int[]{android.R.id.text1, android.R.id.text2});
@@ -114,7 +148,7 @@ public class PerfilComercianteFragment extends Fragment {
 
     private class MyAdapter extends BaseAdapter
     {
-        private List<Item> items = new ArrayList<Item>();
+        public List<Item> items = new ArrayList<Item>();
         private LayoutInflater inflater;
 
         public MyAdapter()
