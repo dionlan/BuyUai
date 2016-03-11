@@ -22,7 +22,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.parse.ParseException;
@@ -50,6 +52,7 @@ public class PrincipalMainActivity extends AppCompatActivity {
     private int year, month, day;
     TextView dataValidadeTextView;
     StringBuilder dataValidade = null;
+    ImageView imagemPublicarView = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,20 +63,115 @@ public class PrincipalMainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Log.i("AppInfo", "CREATE CHAMADO");
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
-
-        setupTabIcons();
 
         dataValidadeTextView = new TextView(this);
         calendar = Calendar.getInstance();
         year = calendar.get(Calendar.YEAR);
         month = calendar.get(Calendar.MONTH);
         day = calendar.get(Calendar.DAY_OF_MONTH);
-        showDate(year, month + 1, day);
+        //showDate(year, month + 1, day);
+
+        setupTabIcons();
+        /*final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        imagemPublicarView = (ImageView) findViewById(R.id.imagemPublicar);
+        imagemPublicarView.setOnClickListener(new View.OnClickListener() {
+
+            //Start new list activity
+            public void onClick(View v) {
+
+
+                builder.setTitle("Enviar uma oferta");
+                final EditText descricao = new EditText(getApplication());
+                descricao.setHint("Descrição");
+
+                final EditText preco = new EditText(getApplication());
+                preco.setHint("Preço");
+                preco.setInputType(InputType.TYPE_NUMBER_VARIATION_NORMAL);
+
+                dataValidadeTextView.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    @SuppressWarnings("deprecation")
+                    public void onClick(View v) {
+                        showDialog(999);
+                    }
+                });
+
+                final LinearLayout lay = new LinearLayout(getApplication());
+                lay.setOrientation(LinearLayout.VERTICAL);
+
+                Button buyButton = new Button(getApplication());
+                buyButton.setText("Tirar Foto");
+
+                buyButton.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+
+                        //Aqui dentro do OnClick, você faz da mesma forma que você trabalha para abrir uma Activity
+                        Intent intent = new Intent();
+                        intent.setType("image*//**//*");
+                        intent.setAction(Intent.ACTION_GET_CONTENT);
+                        startActivityForResult(Intent.createChooser(intent, "Seleciona uma imagem..."), 1);
+                    }
+                });
+
+                lay.addView(descricao);
+                lay.addView(preco);
+                if(dataValidadeTextView.getParent()!=null) {
+                    ((ViewGroup) dataValidadeTextView.getParent()).removeView(dataValidadeTextView);
+                }else {
+                    lay.addView(dataValidadeTextView);
+                }
+
+                lay.addView(buyButton);
+                builder.setView(lay);
+
+                builder.setPositiveButton("Enviar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(final DialogInterface dialog, int which) {
+
+                        ParseObject publica = new ParseObject("Publicacao");
+                        publica.put("username", ParseUser.getCurrentUser().getUsername());
+                        publica.put("descricao", String.valueOf(descricao.getText()));
+                        publica.put("preco", String.valueOf(preco.getText()));
+                        publica.put("validadeOferta", String.valueOf(dataValidade));
+
+                        //detalhe = descrição e preço
+                        String detalheProduto = String.valueOf(descricao.getText()) + " - " + String.valueOf(preco.getText());
+                        publica.put("detalheProduto", detalheProduto);
+                        publica.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+
+
+                                if (e == null) {
+
+                                    Toast.makeText(getApplication(), "Sua publicação foi enviada.", Toast.LENGTH_LONG).show();
+
+                                } else {
+                                    Log.i("AppInfo", "ERRO: " + e);
+                                    Toast.makeText(getApplication(), "Sua publicação não pode ser enviada - por favor tente novamente.", Toast.LENGTH_LONG).show();
+                                }
+
+                            }
+
+                        });
+                    }
+                });
+                builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                builder.show();
+
+            }
+        });*/
+
 
     }
 
@@ -132,7 +230,7 @@ public class PrincipalMainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
+/*    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         if (ParseUser.getCurrentUser().get("isComercio").equals(false)) {
@@ -143,9 +241,9 @@ public class PrincipalMainActivity extends AppCompatActivity {
         }
 
         return true;
-    }
+    }*/
 
-    @Override
+ /*   @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
@@ -181,7 +279,7 @@ public class PrincipalMainActivity extends AppCompatActivity {
 
                     //Aqui dentro do OnClick, você faz da mesma forma que você trabalha para abrir uma Activity
                     Intent intent = new Intent();
-                    intent.setType("image*//*");
+                    intent.setType("image*//**//*");
                     intent.setAction(Intent.ACTION_GET_CONTENT);
                     startActivityForResult(Intent.createChooser(intent, "Seleciona uma imagem..."), 1);
                 }
@@ -232,9 +330,9 @@ public class PrincipalMainActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
-    @SuppressWarnings("deprecation")
+/*    @SuppressWarnings("deprecation")
     public void setDate(View view) {
         showDialog(999);
         Toast.makeText(getApplicationContext(), "ca", Toast.LENGTH_SHORT).show();
@@ -258,12 +356,13 @@ public class PrincipalMainActivity extends AppCompatActivity {
             // arg3 = day
             showDate(arg1, arg2+1, arg3);
         }
-    };
+    };*/
 
-    private void showDate(int year, int month, int day) {
+ /*   private void showDate(int year, int month, int day) {
         dataValidadeTextView.setTextSize(16);
         dataValidade = new StringBuilder().append(day).append("/").append(month+1).append("/").append(year);
         dataValidadeTextView.setText("Data de validade da oferta: " + dataValidade);
+        Log.i("AppInfo", "Data Validade: " +dataValidade);
 
-    }
+    }*/
 }
