@@ -1,8 +1,10 @@
 package com.parse.starter;
 
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
@@ -14,11 +16,14 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.parse.ParseUser;
+
 /**
  * Created by dionlan on 07/03/2016.
  */
 public class DetailsActivity extends AppCompatActivity {
 
+    boolean like = false;
     public DetailsActivity(){
     }
 
@@ -28,7 +33,34 @@ public class DetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.details_activity);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_detalhe_oferta);
+        ImageView imagemVoltarView = (ImageView) findViewById(R.id.imagemVoltar);
+        imagemVoltarView.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            @SuppressWarnings("deprecation")
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
+        final ImageView imagemLikeView = (ImageView) findViewById(R.id.imagemLike);
+        imagemLikeView.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            @SuppressWarnings("deprecation")
+            public void onClick(View v) {
+                imagemLikeView.setImageResource(R.drawable.ic_yes_like);
+                like = true;
+                if(like){
+                    imagemLikeView.setImageResource(R.drawable.ic_no_like);
+                    like = false;
+                }
+            }
+        });
+
+      /*  Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_detalhe_oferta);
+
+
         if (toolbar != null) {
             setSupportActionBar(toolbar);
             toolbar.setNavigationIcon(R.drawable.ic_action_back_teste);
@@ -38,12 +70,10 @@ public class DetailsActivity extends AppCompatActivity {
                     onBackPressed();
                 }
             });
-        }
+        }*/
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //getParentActivityIntent();
         Log.i("AppInfo", "Activity com os detalhes da Imag! ");
-
-
 
         String title = getIntent().getStringExtra("title");
         TextView titleTextView = (TextView) findViewById(R.id.title);

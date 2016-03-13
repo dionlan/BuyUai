@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="fragments.PerfilComercianteFragment">
+    tools:context="fragments.PerfilUsuarioFragment">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_perfil_usuario"
@@ -19,12 +19,45 @@
             android:textColor="#ffffff"
             android:textSize="25dp" />
 
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/imagemConfiguracaoPerfil"
+            android:src="@drawable/ic_action_settings"
+            android:layout_alignParentTop="false"
+            android:layout_alignParentEnd="false"
+            android:layout_alignParentStart="false"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="10dp"
+            android:layout_gravity="right" />
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/imagemLogout"
+            android:src="@drawable/ic_action_logout"
+            android:layout_alignParentTop="false"
+            android:layout_alignParentEnd="false"
+            android:layout_alignParentStart="false"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="10dp"
+            android:layout_gravity="right" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imagemChatPerfilUsuario"
+            android:src="@drawable/ic_action_chat"
+            android:layout_column="1"
+            android:adjustViewBounds="false" />
+
     </android.support.v7.widget.Toolbar>
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:id="@+id/layout_perfil_usuario"
         android:layout_below="@+id/toolbar_perfil_usuario">
 
         <LinearLayout
@@ -35,8 +68,13 @@
             <ImageView
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:id="@+id/foto_perfil"
-                android:src="@drawable/ic_user" />
+                android:id="@+id/fotoPerfilUsuario"
+                android:src="@drawable/ic_atualiza_foto_perfil"
+                android:layout_alignParentEnd="false"
+                android:layout_alignParentBottom="false"
+                android:layout_alignParentTop="false"
+                android:layout_alignParentLeft="false"
+                android:onClick="clicaTirarFoto" />
 
             <TableLayout
                 android:layout_width="wrap_content"
@@ -94,21 +132,14 @@
                         android:layout_column="2" />
                 </TableRow>
 
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:baselineAligned="false"
+                    android:gravity="center">
 
-                    <Button
-                        style="?android:attr/buttonStyleSmall"
-                        android:layout_span="3"
-
-                        android:text="Editar Perfil"
-                        android:id="@+id/butao_editar_perfil"
-                        android:layout_row="2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="12dp" />
-                </TableRow>
+                </LinearLayout>
             </TableLayout>
 
         </LinearLayout>
@@ -117,8 +148,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Usuário Joãozinho da Silva"
+            android:text="Joãozinho da Silva"
             android:id="@+id/nomeUsuario" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Descrição do Perfil do Usuario"
+            android:id="@+id/descricaoPerfilUsuario" />
 
         <GridView
             android:id="@+id/gridview"

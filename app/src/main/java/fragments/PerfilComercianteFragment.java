@@ -23,6 +23,8 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
+import com.parse.starter.Chat;
+import com.parse.starter.ConfiguracaoUsuario;
 import com.parse.starter.DetailsActivity;
 import com.parse.starter.DispatchActivity;
 import com.parse.starter.ListaUsuario;
@@ -93,7 +95,7 @@ public class PerfilComercianteFragment extends Fragment {
         Log.i("AppInfo", "USUARIO LOGADO: " +currentUser.getString("razaoSocial"));
 
         ParseFile imagemContato = (ParseFile)currentUser.get("foto");
-        final ImageView imageComercioView = (ImageView) view.findViewById(R.id.foto_perfil);
+        final ImageView imageComercioView = (ImageView) view.findViewById(R.id.fotoPerfilComercio);
 
         if (imagemContato == null){
 
@@ -139,9 +141,31 @@ public class PerfilComercianteFragment extends Fragment {
             @Override
             @SuppressWarnings("deprecation")
             public void onClick(View v) {
+                ParseUser.getCurrentUser().logOut();
                 startActivity(new Intent(getActivity(), DispatchActivity.class));
             }
         });
+
+        ImageView imagemConfigPerfilView = (ImageView) view.findViewById(R.id.imagemConfiguracaoPerfil);
+        imagemConfigPerfilView.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            @SuppressWarnings("deprecation")
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity().getBaseContext(), ConfiguracaoUsuario.class));
+            }
+        });
+
+        ImageView imagemChatPerfilComercioView = (ImageView) view.findViewById(R.id.chatPerfilComercio);
+        imagemChatPerfilComercioView.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            @SuppressWarnings("deprecation")
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity().getBaseContext(), Chat.class));
+            }
+        });
+
         return view;
     }
 

@@ -10,21 +10,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,6 +32,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.parse.starter.DispatchActivity;
+import com.parse.starter.PesquisaOferta;
 import com.parse.starter.R;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -48,7 +46,7 @@ public class FeedFragment extends Fragment {
     ListView listView;
     SimpleAdapter simpleAdapter;
     List<Map<String, String>> publicacaoData = new ArrayList<Map<String, String>>();
-    View view = null;
+    View view, view1 = null;
     StringBuilder dataValidade = null;
     private Calendar calendar = null;
     private int year, month, day;
@@ -70,10 +68,14 @@ public class FeedFragment extends Fragment {
 
         super.onCreate(savedInstanceState);
         view = inflater.inflate(R.layout.fragment_feed, container, false);
+        view1 = inflater.inflate(R.layout.toolbar_pesquisa_oferta, container, false);
         listView = (ListView) view.findViewById(R.id.listaFeeds);
         publicacaoData = new ArrayList<Map<String, String>>();
         simpleAdapter = new SimpleAdapter(getActivity().getApplicationContext(), publicacaoData, android.R.layout.simple_list_item_2, new String[]{"username", "detalheProduto"}, new int[]{android.R.id.text1, android.R.id.text2});
         imagemPublicacaoView = (ImageView) view.findViewById(R.id.imagemPublicar);
+        if (ParseUser.getCurrentUser().get("isComercio").equals(false)) {
+            imagemPublicacaoView.setVisibility(View.GONE);
+        }
 
         final android.app.DialogFragment dFragment = new DatePickerFragment();
         final FragmentManager fragManager = myContext.getFragmentManager();
@@ -128,8 +130,8 @@ public class FeedFragment extends Fragment {
                 final EditText preco = new EditText(getActivity());
                 preco.setHint("Preço");
                 preco.setInputType(InputType.TYPE_NUMBER_VARIATION_NORMAL);
-
-                dataValidadeTextView.setText("Data de validade da oferta: " + dataValidade);
+                dataValidadeTextView.setTextSize(18);
+                dataValidadeTextView.setText(" Data de validade da oferta: " + dataValidade);
 
                 dataValidadeTextView.setOnClickListener(new View.OnClickListener() {
 
@@ -142,17 +144,18 @@ public class FeedFragment extends Fragment {
                     }
                 });
 
-                Log.i("AppInfo", "Data após o CLICK atualizada: " +DatePickerFragment.dataAtualizada);
+                Log.i("AppInfo", "Data após o CLICK atualizada: " + DatePickerFragment.dataAtualizada);
                 LinearLayout lay = new LinearLayout(getActivity());
                 lay.setOrientation(LinearLayout.VERTICAL);
 
-                Button buyButton = new Button(getActivity());
-                buyButton.setText("Tirar Foto");
+                ImageView imagemAddFotoOferta = new ImageView(getActivity());
+                imagemAddFotoOferta.setImageResource(R.drawable.ic_add_photo);
 
-                buyButton.setOnClickListener(new View.OnClickListener() {
+                imagemAddFotoOferta.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    @SuppressWarnings("deprecation")
                     public void onClick(View v) {
-
-                        //Aqui dentro do OnClick, você faz da mesma forma que você trabalha para abrir uma Activity
                         Intent intent = new Intent();
                         intent.setType("image*//*");
                         intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -165,7 +168,9 @@ public class FeedFragment extends Fragment {
 
                 lay.addView(dataValidadeTextView);
 
-                lay.addView(buyButton);
+                RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams (RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                lp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+                lay.addView(imagemAddFotoOferta, lp);
 
                 builder.setView(lay);
                 builder.setPositiveButton("Enviar", new DialogInterface.OnClickListener() {
@@ -209,6 +214,25 @@ public class FeedFragment extends Fragment {
             }
         });
 
+        ImageView imagemPesquisarView = (ImageView) view.findViewById(R.id.imagemPesquisar);
+        imagemPesquisarView.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            @SuppressWarnings("deprecation")
+            public void onClick(View v) {
+
+                startActivity(new Intent(getContext(), PesquisaOferta.class));
+/*                ((ViewGroup) view.getParent()).removeView(view.findViewById(R.id.toolbar_ofertas_publicadas));
+                Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar_ofertas_publicadas);
+                toolbar.removeAllViews();
+                toolbar.removeAllViewsInLayout();
+                toolbar.addView(view1.findViewById(R.id.toolbar_pesquisa_oferta));
+
+                AppCompatActivity activity = (AppCompatActivity) getActivity();
+                activity.setSupportActionBar(toolbar);*/
+            }
+        });
+
         return view;
     }
 
@@ -241,7 +265,8 @@ public class FeedFragment extends Fragment {
             dataAtualizada = new StringBuilder().append(day).append("/").append(month+1).append("/").append(year);
 
             // Display the chosen date to app interface
-            FeedFragment.dataValidadeTextView.setText("Data de validade da oferta: " +dataAtualizada);
+            dataValidadeTextView.setTextSize(18);
+            FeedFragment.dataValidadeTextView.setText(" Data de validade da oferta: " +dataAtualizada);
 
         }
     }
@@ -331,11 +356,14 @@ public class FeedFragment extends Fragment {
 
         return super.onOptionsItemSelected(item);
     }
-    @Override
+  /*  @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.clear();
-       /* inflater.inflate(R.menu.menu_usuarios, menu);
-        super.onCreateOptionsMenu(menu, inflater);*/
+        if (ParseUser.getCurrentUser().get("isComercio").equals(false)) {
+            inflater.inflate(R.menu.menu_lista_feed_pessoa_fisica, menu);
+
+        }else{
+            inflater.inflate(R.menu.menu_lista_feed_pessoa_juridica, menu);
+        }
     }
 
     @Override
@@ -346,5 +374,5 @@ public class FeedFragment extends Fragment {
     private void selectMenu(Menu menu) {
         menu.clear();
     }
-
+*/
 }

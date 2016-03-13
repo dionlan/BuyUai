@@ -13,7 +13,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.parse.GetDataCallback;
@@ -21,16 +25,27 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
+import com.parse.starter.Chat;
+import com.parse.starter.ConfiguracaoUsuario;
+import com.parse.starter.DetailsActivity;
 import com.parse.starter.DispatchActivity;
 import com.parse.starter.ListaUsuario;
+import com.parse.starter.PesquisaOferta;
 import com.parse.starter.R;
 
+import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class PerfilUsuarioFragment extends Fragment {
 
     ViewPager viewPager = null;
     View view = null;
+    List<Map<String, String>> publicacaoData = null;
+    GridView gridview = null;
+    SimpleAdapter simpleAdapter = null;
+    Bitmap bitmap = null;
 
     public PerfilUsuarioFragment() {
         // Required empty public constructor
@@ -47,10 +62,46 @@ public class PerfilUsuarioFragment extends Fragment {
         viewPager = (ViewPager) getActivity().findViewById(R.id.viewpager);
         setHasOptionsMenu(true);
 
+        gridview = (GridView)view.findViewById(R.id.gridview);
+        gridview.setHorizontalSpacing(5);
+        gridview.setVerticalSpacing(5);
+        final MyAdapter m = new MyAdapter();
+        gridview.setAdapter(m);
+
+        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+
+            public void onItemClick(AdapterView<?> parent, View v,
+                                    int position, long id) {
+
+                //ImageItem item = (ImageItem) parent.getItemAtPosition(position);
+                //Create intent
+                Intent intent = new Intent(getActivity(), DetailsActivity.class);
+
+                bitmap = BitmapFactory.decodeResource(getResources(), m.items.get(position).drawableId);
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos);
+                byte[] b = baos.toByteArray();
+
+                intent.putExtra("image", b);
+                intent.putExtra("title", String.valueOf(m.items.get(position).name));
+
+
+                //intent.putExtra("image", m.items.get(position).drawableId);
+
+                //Start details activity
+                startActivity(intent);
+
+            }
+        });
+
+        publicacaoData = new ArrayList<Map<String, String>>();
+        simpleAdapter = new SimpleAdapter(getActivity().getApplicationContext(), publicacaoData, android.R.layout.simple_list_item_2, new String[]{"username", "detalheProduto"}, new int[]{android.R.id.text1, android.R.id.text2});
+
         ParseUser currentUser = ParseUser.getCurrentUser();
 
         ParseFile imagemContato = (ParseFile)currentUser.get("foto");
-        final ImageView imageComercioView = (ImageView) view.findViewById(R.id.foto_perfil);
+        final ImageView imageComercioView = (ImageView) view.findViewById(R.id.fotoPerfilUsuario);
 
         if (imagemContato == null){
 
@@ -87,7 +138,110 @@ public class PerfilUsuarioFragment extends Fragment {
                 startActivity(new Intent(getActivity().getBaseContext(), ListaUsuario.class));
             }
         });
+
+        ImageView imagemLogoutView = (ImageView) view.findViewById(R.id.imagemLogout);
+        imagemLogoutView.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            @SuppressWarnings("deprecation")
+            public void onClick(View v) {
+                ParseUser.getCurrentUser().logOut();
+                startActivity(new Intent(getContext(), DispatchActivity.class));
+            }
+        });
+
+        ImageView imagemConfigPerfilView = (ImageView) view.findViewById(R.id.imagemConfiguracaoPerfil);
+        imagemConfigPerfilView.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            @SuppressWarnings("deprecation")
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity().getBaseContext(), ConfiguracaoUsuario.class));
+            }
+        });
+
+        ImageView imagemChatPerfilUsuarioView = (ImageView) view.findViewById(R.id.imagemChatPerfilUsuario);
+        imagemChatPerfilUsuarioView.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            @SuppressWarnings("deprecation")
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity().getBaseContext(), Chat.class));
+            }
+        });
+
         return view;
+    }
+
+    private class MyAdapter extends BaseAdapter
+    {
+        public List<Item> items = new ArrayList<Item>();
+        private LayoutInflater inflater;
+
+        public MyAdapter()
+        {
+            inflater = LayoutInflater.from(getContext().getApplicationContext());
+
+            items.add(new Item("Cerveja Antarctica, R$28,00, Válido até 04/03/2016 - 15 Curtidas", R.drawable.antarctica));
+            items.add(new Item("Tequila José Cuervo, R$55,00, Válido até 05/03/2016 - 5 Curtidas", R.drawable.tequila));
+            items.add(new Item("Cerveja Bohemia, R$32,00, Válido até 12/03/2016 - 11 Curtidas", R.drawable.bohemia));
+            items.add(new Item("Vodka Aboslut, R$60,00, Válido até 13/03/2016 - 4 Curtidas", R.drawable.absolut));
+            items.add(new Item("Cachaça Velho Barreiro, R$15,00, Válido até 15/03/2016 - 1 Curtida", R.drawable.velhobarreiro));
+        }
+
+        @Override
+        public int getCount() {
+            return items.size();
+        }
+
+        @Override
+        public Object getItem(int i)
+        {
+            return items.get(i);
+        }
+
+        @Override
+        public long getItemId(int i)
+        {
+            return items.get(i).drawableId;
+        }
+
+        @Override
+        public View getView(int i, View view, ViewGroup viewGroup)
+        {
+            View v = view;
+            ImageView picture;
+            TextView name;
+
+            if(v == null)
+            {
+                v = inflater.inflate(R.layout.gridview_item, viewGroup, false);
+                v.setTag(R.id.picture, v.findViewById(R.id.picture));
+                v.setTag(R.id.text, v.findViewById(R.id.text));
+            }
+
+            picture = (ImageView)v.getTag(R.id.picture);
+            name = (TextView)v.getTag(R.id.text);
+
+            Item item = (Item)getItem(i);
+
+            picture.setImageResource(item.drawableId);
+            name.setText(item.name);
+
+            return v;
+        }
+
+        private class Item
+        {
+            final String name;
+            final int drawableId;
+
+            Item(String name, int drawableId)
+            {
+                this.name = name;
+                this.drawableId = drawableId;
+            }
+        }
     }
 
     @Override

@@ -111,7 +111,7 @@ public class CadastrarFragment extends Fragment {
 
         view = inflater.inflate(R.layout.fragment_cadastrar, container, false);
         // Set up the signup form.
-        imagemContatoView = (ImageView) view.findViewById(R.id.imagemContato);
+        imagemContatoView = (ImageView) view.findViewById(R.id.imagemContatoCadastro);
         nomePFisicaView = (EditText) view.findViewById(R.id.campoNome);
         nomeFantasiaPJuridicaView = (EditText) view.findViewById(R.id.campoNomeFantasia);
         cpfView = (EditText) view.findViewById(R.id.campoCpfCnpj);
@@ -308,25 +308,28 @@ public class CadastrarFragment extends Fragment {
             }
         });
 
-        view.findViewById(R.id.botaoAddFoto).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
+/*        ImageView imagemAddFotoCadastro = (ImageView) view.findViewById(R.id.imagemAddFotoCadastro);
+        imagemAddFotoCadastro.setOnClickListener(new View.OnClickListener() {
 
+            @Override
+            @SuppressWarnings("deprecation")
+            public void onClick(View v) {
                 fotoCamera = false;
                 Intent intent = new Intent();
-                intent.setType("image*//*");
+                intent.setType("image*//**//*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(Intent.createChooser(intent, "Select Contact Image"), 1);
+            }
+        });*/
 
-            } });
-
-        view.findViewById(R.id.botaoTirarFoto).setOnClickListener(new View.OnClickListener() {
+       /* view.findViewById(R.id.botaoTirarFoto).setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
 
                 fotoCamera = true;
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(intent, 0);
 
-            } });
+            } });*/
 
         // Defines the xml file for the fragment
         //View view = inflater.inflate(R.layout.fragment_cadastrar, container, false);

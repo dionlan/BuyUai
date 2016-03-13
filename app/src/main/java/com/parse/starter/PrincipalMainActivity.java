@@ -177,7 +177,7 @@ public class PrincipalMainActivity extends AppCompatActivity {
 
     public void setupTabIcons() {
             tabIcons = new int[]{
-                    R.drawable.feed1,
+                    R.drawable.ic_feed_store,
                     R.drawable.ic_user1
                     //R.drawable.ic_tab_call
             };

@@ -5,6 +5,6 @@
     tools:context=".Feed">
     <item android:id="@+id/publicar"
         android:title=""
-        android:icon="@drawable/publicar"
+        android:icon="@drawable/ic_publicar_oferta"
         app:showAsAction="always"/>
 </menu>
