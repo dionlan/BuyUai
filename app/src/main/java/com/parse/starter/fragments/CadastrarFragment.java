@@ -1,4 +1,4 @@
-package fragments;
+package com.parse.starter.fragments;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -53,7 +53,6 @@ public class CadastrarFragment extends Fragment {
     private EditText senhaView;
     private EditText confirmaSenhaView;
     private EditText emailView;
-    private EditText cpfView;
     private EditText cnpjView;
     private EditText enderecoView;
     private EditText telefoneView;
@@ -62,8 +61,8 @@ public class CadastrarFragment extends Fragment {
     private TextView textoNomeUsuarioFaceView;
     boolean fotoCamera;
     private Bitmap bitmap;
-    ImageView imagemContatoView;
-    Uri imagemUri = Uri.parse("android.resource://com.parse.starter/drawable/ic_user.png");
+    private ImageView imagemContatoView;
+    private Uri imagemUri = Uri.parse("android.resource://com.parse.starter/drawable/ic_atualiza_foto_perfil.png");
 
     private Switch mySwitch;
     View view = null;
@@ -114,7 +113,7 @@ public class CadastrarFragment extends Fragment {
         imagemContatoView = (ImageView) view.findViewById(R.id.imagemContatoCadastro);
         nomePFisicaView = (EditText) view.findViewById(R.id.campoNome);
         nomeFantasiaPJuridicaView = (EditText) view.findViewById(R.id.campoNomeFantasia);
-        cpfView = (EditText) view.findViewById(R.id.campoCpfCnpj);
+        cnpjView = (EditText) view.findViewById(R.id.campoCnpj);
         usuarioView = (EditText) view.findViewById(R.id.campoUsuario);
         senhaView = (EditText) view.findViewById(R.id.campoSenha);
         confirmaSenhaView = (EditText) view.findViewById(R.id.campoConfirmaSenha);
@@ -132,6 +131,9 @@ public class CadastrarFragment extends Fragment {
             mySwitch.setChecked(false);
 
             nomeFantasiaPJuridicaView.setVisibility(View.GONE);
+            cnpjView.setVisibility(View.GONE);
+            enderecoView.setVisibility(View.GONE);
+            cepView.setVisibility(View.GONE);
 
         }
         mySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -153,8 +155,9 @@ public class CadastrarFragment extends Fragment {
                     nomePFisicaView.setVisibility(View.VISIBLE);
                     nomePFisicaView.setHint("Nome");
 
-                    cnpjView = (EditText) view.findViewById(R.id.campoCpfCnpj);
-                    cpfView.setHint("CPF");
+                    cnpjView.setVisibility(View.GONE);
+
+                    cepView.setVisibility(View.GONE);
 
                     enderecoView.setVisibility(View.GONE);
 
@@ -180,8 +183,13 @@ public class CadastrarFragment extends Fragment {
                     nomeFantasiaPJuridicaView = (EditText) view.findViewById(R.id.campoNomeFantasia);
                     nomeFantasiaPJuridicaView.setHint("Nome Fantasia");
 
-                    cnpjView = (EditText) view.findViewById(R.id.campoCpfCnpj);
+                    cnpjView = (EditText) view.findViewById(R.id.campoCnpj);
+                    cnpjView.setVisibility(View.VISIBLE);
                     cnpjView.setHint("CNPJ");
+
+                    cepView = (EditText) view.findViewById(R.id.campoCep);
+                    cepView.setVisibility(View.VISIBLE);
+                    cepView.setHint("CEP");
 
                     enderecoView.setVisibility(View.VISIBLE);
                 }
@@ -229,9 +237,9 @@ public class CadastrarFragment extends Fragment {
                     validationError = true;
                     validationErrorMessage.append("Informe seu e-mail");
                 }
-                if (isEmpty(cpfView)) {
+                if (isEmpty(cnpjView)) {
                     validationError = true;
-                    validationErrorMessage.append("Informe seu CPF");
+                    validationErrorMessage.append("Informe seu CNPJ");
                 }
                 if (isEmpty(enderecoView)) {
                     validationError = true;
@@ -268,7 +276,6 @@ public class CadastrarFragment extends Fragment {
                 if (!mySwitch.isChecked()) { //Cadastro de pessoa física
                     user.put("isComercio", false);
                     user.put("nomePessoaFisica", nomePFisicaView.getText().toString());
-                    user.put("cpf", cpfView.getText().toString());
                 } else { //Cadastro de Pessoa Jurídica
                     user.put("isComercio", true);
                     user.put("nomeFantasia", nomeFantasiaPJuridicaView.getText().toString());
@@ -487,7 +494,7 @@ public class CadastrarFragment extends Fragment {
     private String constructWelcomeMessage(Profile profile) {
         StringBuffer stringBuffer = new StringBuffer();
         if (profile != null) {
-            stringBuffer.append("Welcome " + profile.getName());
+            stringBuffer.append("Seja bem vindo(a), " + profile.getName());
             Log.i("AppInfo", "Nome do usuario: " +profile.getName());
         }
         return stringBuffer.toString();

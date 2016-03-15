@@ -5,12 +5,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 
-public class Chat extends AppCompatActivity {
+/**
+ * Created by dionlan on 07/03/2016.
+ */
+public class ComentariosOfertaActivity extends AppCompatActivity {
+
+    public ComentariosOfertaActivity(){
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_configuracao_perfil_usuario);
+        setContentView(R.layout.comentarios_oferta_activity);
 
         ImageView imagemVoltarView = (ImageView) findViewById(R.id.imagemVoltar);
         imagemVoltarView.setOnClickListener(new View.OnClickListener() {
@@ -21,7 +27,5 @@ public class Chat extends AppCompatActivity {
                 onBackPressed();
             }
         });
-
-
     }
 }

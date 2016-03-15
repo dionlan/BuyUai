@@ -1,4 +1,4 @@
-package fragments;
+package com.parse.starter.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,9 +8,9 @@ import android.view.ViewGroup;
 
 import com.parse.starter.R;
 
-public class OneFragment extends Fragment {
+public class ConfiguraPerfilFragment extends Fragment {
 
-    public OneFragment() {
+    public ConfiguraPerfilFragment() {
         // Required empty public constructor
     }
 
@@ -25,5 +25,4 @@ public class OneFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_one, container, false);
     }
-
 }

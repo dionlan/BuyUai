@@ -1,4 +1,4 @@
-package fragments;
+package com.parse.starter.fragments;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -12,8 +12,10 @@ import android.widget.Toast;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
+
 import com.parse.starter.PrincipalMainActivity;
 import com.parse.starter.R;
+import com.parse.starter.activity.MainActivity;
 
 public class LogarFragment extends Fragment {
 

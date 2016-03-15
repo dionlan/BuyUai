@@ -1,4 +1,4 @@
-package fragments;
+package com.parse.starter.fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -46,10 +46,9 @@ public class FeedFragment extends Fragment {
     ListView listView;
     SimpleAdapter simpleAdapter;
     List<Map<String, String>> publicacaoData = new ArrayList<Map<String, String>>();
-    View view, view1 = null;
-    StringBuilder dataValidade = null;
+    View view = null;
     private Calendar calendar = null;
-    private int year, month, day;
+    private int year, month, day, hour, minute, second;
     static TextView dataValidadeTextView;
     ImageView imagemPublicacaoView;
     private FragmentActivity myContext;
@@ -68,7 +67,6 @@ public class FeedFragment extends Fragment {
 
         super.onCreate(savedInstanceState);
         view = inflater.inflate(R.layout.fragment_feed, container, false);
-        view1 = inflater.inflate(R.layout.toolbar_pesquisa_oferta, container, false);
         listView = (ListView) view.findViewById(R.id.listaFeeds);
         publicacaoData = new ArrayList<Map<String, String>>();
         simpleAdapter = new SimpleAdapter(getActivity().getApplicationContext(), publicacaoData, android.R.layout.simple_list_item_2, new String[]{"username", "detalheProduto"}, new int[]{android.R.id.text1, android.R.id.text2});
@@ -111,7 +109,19 @@ public class FeedFragment extends Fragment {
         year = calendar.get(Calendar.YEAR);
         month = calendar.get(Calendar.MONTH);
         day = calendar.get(Calendar.DAY_OF_MONTH);
-        dataValidade = new StringBuilder().append(day).append("/").append(month+2).append("/").append(year);
+        hour = calendar.get(Calendar.HOUR_OF_DAY);
+        minute = calendar.get(Calendar.MINUTE);
+        second = calendar.get(Calendar.SECOND);
+        Log.i("AppInfo", "Data CALENDAR" +calendar);
+        DatePickerFragment.dataAtualizada = new StringBuilder().append(day).append("/").append(month+2).append("/").append(year);
+        //.append(" - ").append(hour).append(":").append(minute).append(":").append(second);
+
+        /*Calendar dataAtual = Calendar.getInstance();
+        if(calendar.before(dataAtual)){
+            Log.i("AppInfo", "Data da Oferta não expirada!" +DatePickerFragment.dataAtualizada);
+        }else{
+            Log.i("AppInfo", "Data da Oferta expirada! (Data Atual igual ou maior que a lançada na oferta)" +dataAtual.getTime());
+        }*/
 
         imagemPublicacaoView.setOnClickListener(new View.OnClickListener() {
 
@@ -131,7 +141,7 @@ public class FeedFragment extends Fragment {
                 preco.setHint("Preço");
                 preco.setInputType(InputType.TYPE_NUMBER_VARIATION_NORMAL);
                 dataValidadeTextView.setTextSize(18);
-                dataValidadeTextView.setText(" Data de validade da oferta: " + dataValidade);
+                dataValidadeTextView.setText(" Data de validade da oferta atual: " + DatePickerFragment.dataAtualizada);
 
                 dataValidadeTextView.setOnClickListener(new View.OnClickListener() {
 

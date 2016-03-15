@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:facebook="http://schemas.android.com/apk/res-auto"
-    tools:context="fragments.CadastrarFragment"
+    tools:context=".fragments.CadastrarFragment"
     android:background="#91c4f3">
 
     <ScrollView
@@ -149,10 +149,10 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/campoCpfCnpj"
+                android:id="@+id/campoCnpj"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:hint="CPF" />
+                android:hint="CNPJ" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -183,11 +183,16 @@
             <Button
                 android:id="@+id/action_button_signup"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="32dp"
-                android:paddingRight="32dp"
+                android:layout_height="26dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/botao_seguir"
                 android:text="Cadastrar"
-                android:layout_gravity="center_horizontal" />
+                android:textColor="#ffffff"
+                android:textSize="12sp"
+                android:layout_gravity="center_vertical"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"/>
 
         </LinearLayout>
     </ScrollView>

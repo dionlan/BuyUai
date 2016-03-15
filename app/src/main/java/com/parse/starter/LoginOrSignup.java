@@ -31,7 +31,7 @@ public class LoginOrSignup extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(".:LOGIN:.");
         toolbar.setSubtitle("BuyUai.");
-        toolbar.setLogo(R.drawable.ic_launcher);
+        //toolbar.setLogo(R.drawable.ic_launcher);
         setSupportActionBar(toolbar);
 
         // Set up the login form.

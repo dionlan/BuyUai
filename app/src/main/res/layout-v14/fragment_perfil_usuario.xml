@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="fragments.PerfilUsuarioFragment">
+    tools:context=".fragments.PerfilUsuarioFragment">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_perfil_usuario"
@@ -24,18 +24,6 @@
             android:layout_height="40dp"
             android:id="@+id/imagemConfiguracaoPerfil"
             android:src="@drawable/ic_action_settings"
-            android:layout_alignParentTop="false"
-            android:layout_alignParentEnd="false"
-            android:layout_alignParentStart="false"
-            android:layout_marginTop="8dp"
-            android:layout_marginRight="10dp"
-            android:layout_gravity="right" />
-
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:id="@+id/imagemLogout"
-            android:src="@drawable/ic_action_logout"
             android:layout_alignParentTop="false"
             android:layout_alignParentEnd="false"
             android:layout_alignParentStart="false"
@@ -73,8 +61,7 @@
                 android:layout_alignParentEnd="false"
                 android:layout_alignParentBottom="false"
                 android:layout_alignParentTop="false"
-                android:layout_alignParentLeft="false"
-                android:onClick="clicaTirarFoto" />
+                android:layout_alignParentLeft="false" />
 
             <TableLayout
                 android:layout_width="wrap_content"

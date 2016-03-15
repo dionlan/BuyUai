@@ -1,4 +1,4 @@
-package fragments;
+package com.parse.starter.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,7 +17,6 @@ import com.parse.ParseACL;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.parse.starter.PrincipalMainActivity;
 import com.parse.starter.R;
 
 import java.util.ArrayList;

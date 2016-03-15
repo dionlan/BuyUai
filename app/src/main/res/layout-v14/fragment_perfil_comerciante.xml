@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="fragments.PerfilComercianteFragment">
+    tools:context=".fragments.PerfilComercianteFragment">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -36,18 +36,6 @@
             android:layout_gravity="right" />
 
         <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:id="@+id/imagemLogout"
-            android:src="@drawable/ic_action_logout"
-            android:layout_alignParentTop="false"
-            android:layout_alignParentEnd="false"
-            android:layout_alignParentStart="false"
-            android:layout_marginTop="8dp"
-            android:layout_marginRight="10dp"
-            android:layout_gravity="right" />
-
-        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/chatPerfilComercio"
@@ -65,133 +53,140 @@
         android:id="@+id/linearLayout2">
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-                <ImageView
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:id="@+id/fotoPerfilComercio"
-                    android:src="@drawable/ic_atualiza_foto_perfil"
-                    android:layout_alignParentEnd="false"
-                    android:layout_alignParentBottom="false"
-                    android:layout_alignParentTop="false"
-                    android:layout_alignParentLeft="false"
-                    android:onClick="clicaTirarFoto" />
+            <ImageView
+                android:id="@+id/fotoPerfilComercio"
+                android:layout_width="88dp"
+                android:layout_height="88dp"
+                android:layout_marginRight="16dp" />
 
-
-
-              <!--  <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/imagemAddFotoCadastro"
-                    android:src="@drawable/ic_add_photo"
-                    android:layout_centerVertical="true"
-                    android:layout_centerHorizontal="true"
-                    android:onClick="clicaTirarFoto" />-->
-
-
-            <TableLayout
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:collapseColumns="3"
-                android:layout_marginLeft="10dp">
+                android:layout_marginTop="20dp">
 
-                <TableRow
+                <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="  Publicações  "
-                        android:id="@+id/publicacacoes"
-                        android:layout_row="0"
-                        android:layout_column="0"
-                        android:layout_gravity="center_horizontal" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="  Seguidores  "
-                        android:id="@+id/seguidores"
-                        android:layout_gravity="left"
-                        android:layout_row="0"
-                        android:layout_column="1" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="  Seguindo  "
-                        android:id="@+id/seguindo"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_row="0"
-                        android:layout_column="2"
-                        android:onClick="clicaCarregarSeguindo" />
-
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="10"
-                        android:id="@+id/textView4"
-                        android:layout_gravity="center_horizontal" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="120"
-                        android:id="@+id/textView5"
-                        android:layout_gravity="center_horizontal" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="200"
-                        android:id="@+id/qtd_seguindo"
-                        android:layout_gravity="center_horizontal" />
-                </TableRow>
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:baselineAligned="false"
-                    android:gravity="center">
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Disitribuidora Recanto"
+                    android:id="@+id/nomeComercio"
+                    android:textSize="20sp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="Descrição do Perfil do Comércio"
+                    android:id="@+id/descricaoPerfilComercio"
+                    android:textSize="12sp"/>
+
+                <Button
+                    android:id="@+id/botaoSeguirNaoSeguir"
+                    android:layout_width="205dp"
+                    android:layout_height="26dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/botao_seguir"
+                    android:text="seguindo"
+                    android:textColor="#ffffff"
+                    android:textSize="12sp"
+                    android:layout_gravity="center_vertical" />
 
 
-                    </LinearLayout>
-                </TableLayout>
+                <!--  <ImageView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/imagemAddFotoCadastro"
+                      android:src="@drawable/ic_add_photo"
+                      android:layout_centerVertical="true"
+                      android:layout_centerHorizontal="true"
+                      android:onClick="clicaTirarFoto" />-->
 
+
+            </LinearLayout>
         </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/linearLayout4"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Disitribuidora Recanto"
-            android:id="@+id/nomeComercio" />
+            android:background="#d6eafc">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Descrição do Perfil do Comércio"
-            android:id="@+id/descricaoPerfilComercio" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1167"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textSize="20sp"
+                    android:id="@+id/qtd_publicacoes" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Publicações"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textSize="12sp"
+                    android:id="@+id/publicacoes" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="396"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textSize="20sp"
+                    android:id="@+id/qtd_seguidores" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="seguidores"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textSize="12sp"
+                    android:id="@+id/seguidores" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="485"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textSize="20sp"
+                    android:id="@+id/qtd_seguindo" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Seguindo"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textSize="12sp"
+                    android:id="@+id/seguindo" />
+            </LinearLayout>
+        </LinearLayout>
 
         <GridView
             android:id="@+id/gridview"

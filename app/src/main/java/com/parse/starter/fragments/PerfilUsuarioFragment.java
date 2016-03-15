@@ -1,4 +1,4 @@
-package fragments;
+package com.parse.starter.fragments;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -6,10 +6,10 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -18,23 +18,25 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
-import com.parse.starter.Chat;
+import com.parse.starter.ChatActivity;
 import com.parse.starter.ConfiguracaoUsuario;
-import com.parse.starter.DetailsActivity;
+import com.parse.starter.DetalhesOfertaActivity;
 import com.parse.starter.DispatchActivity;
 import com.parse.starter.ListaUsuario;
 import com.parse.starter.R;
+
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class PerfilComercianteFragment extends Fragment {
+public class PerfilUsuarioFragment extends Fragment {
 
     ViewPager viewPager = null;
     View view = null;
@@ -43,6 +45,10 @@ public class PerfilComercianteFragment extends Fragment {
     SimpleAdapter simpleAdapter = null;
     Bitmap bitmap = null;
 
+    public PerfilUsuarioFragment() {
+        // Required empty public constructor
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,8 +56,7 @@ public class PerfilComercianteFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_perfil_comerciante, container, false);
-
+        view = inflater.inflate(R.layout.fragment_perfil_usuario, container, false);
         viewPager = (ViewPager) getActivity().findViewById(R.id.viewpager);
         setHasOptionsMenu(true);
 
@@ -69,7 +74,7 @@ public class PerfilComercianteFragment extends Fragment {
 
                 //ImageItem item = (ImageItem) parent.getItemAtPosition(position);
                 //Create intent
-                Intent intent = new Intent(getActivity(), DetailsActivity.class);
+                Intent intent = new Intent(getActivity(), DetalhesOfertaActivity.class);
 
                 bitmap = BitmapFactory.decodeResource(getResources(), m.items.get(position).drawableId);
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -92,14 +97,13 @@ public class PerfilComercianteFragment extends Fragment {
         simpleAdapter = new SimpleAdapter(getActivity().getApplicationContext(), publicacaoData, android.R.layout.simple_list_item_2, new String[]{"username", "detalheProduto"}, new int[]{android.R.id.text1, android.R.id.text2});
 
         ParseUser currentUser = ParseUser.getCurrentUser();
-        Log.i("AppInfo", "USUARIO LOGADO: " +currentUser.getString("razaoSocial"));
 
         ParseFile imagemContato = (ParseFile)currentUser.get("foto");
-        final ImageView imageComercioView = (ImageView) view.findViewById(R.id.fotoPerfilComercio);
+        final ImageView imageComercioView = (ImageView) view.findViewById(R.id.fotoPerfilUsuario);
 
         if (imagemContato == null){
 
-            imageComercioView.setImageResource(R.drawable.ic_user);
+            imageComercioView.setImageResource(R.drawable.ic_atualiza_foto_perfil);
         }else {
 
             imagemContato.getDataInBackground(new GetDataCallback() {
@@ -112,13 +116,22 @@ public class PerfilComercianteFragment extends Fragment {
             });
         }
 
-        String razaoSocialComerio = currentUser.getString("razaoSocial");
-        TextView razaoSocialComercioView = (TextView) view.findViewById(R.id.nomeComercio);
-        razaoSocialComercioView.setText(razaoSocialComerio);
+        view.findViewById(R.id.fotoPerfilUsuario).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+
+                Intent intent = new Intent();
+                intent.setType("image*//**//*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Contact Image"), 1);
+
+            } });
+
+        String nomeUsuario = currentUser.getString("nomePessoaFisica");
+        TextView razaoUsuarioView = (TextView) view.findViewById(R.id.nomeUsuario);
+        razaoUsuarioView.setText(nomeUsuario);
 
         List<ParseObject> qtdSeguindo = (List<ParseObject>) currentUser.get("seguindo");
         TextView qtdSeguindoView = (TextView) view.findViewById(R.id.qtd_seguindo);
-        Log.i("AppInfo", "LISTA SEGUINDO: " + qtdSeguindo.size());
         qtdSeguindoView.setText(String.valueOf(qtdSeguindo.size()));
 
         view.findViewById(R.id.seguindo).setOnClickListener(new View.OnClickListener() {
@@ -134,18 +147,6 @@ public class PerfilComercianteFragment extends Fragment {
             }
         });
 
-
-        ImageView imagemLogoutView = (ImageView) view.findViewById(R.id.imagemLogout);
-        imagemLogoutView.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            @SuppressWarnings("deprecation")
-            public void onClick(View v) {
-                ParseUser.getCurrentUser().logOut();
-                startActivity(new Intent(getActivity(), DispatchActivity.class));
-            }
-        });
-
         ImageView imagemConfigPerfilView = (ImageView) view.findViewById(R.id.imagemConfiguracaoPerfil);
         imagemConfigPerfilView.setOnClickListener(new View.OnClickListener() {
 
@@ -156,13 +157,13 @@ public class PerfilComercianteFragment extends Fragment {
             }
         });
 
-        ImageView imagemChatPerfilComercioView = (ImageView) view.findViewById(R.id.chatPerfilComercio);
-        imagemChatPerfilComercioView.setOnClickListener(new View.OnClickListener() {
+        ImageView imagemChatPerfilUsuarioView = (ImageView) view.findViewById(R.id.imagemChatPerfilUsuario);
+        imagemChatPerfilUsuarioView.setOnClickListener(new View.OnClickListener() {
 
             @Override
             @SuppressWarnings("deprecation")
             public void onClick(View v) {
-                startActivity(new Intent(getActivity().getBaseContext(), Chat.class));
+                startActivity(new Intent(getActivity().getBaseContext(), ChatActivity.class));
             }
         });
 
@@ -243,30 +244,22 @@ public class PerfilComercianteFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
-       /* inflater.inflate(R.menu.menu_usuarios, menu);
-        super.onCreateOptionsMenu(menu, inflater);*/
+        inflater.inflate(R.menu.menu_usuarios, menu);
+        super.onCreateOptionsMenu(menu, inflater);
     }
     @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        selectMenu(menu);
-    }
-
-    private void selectMenu(Menu menu) {
-        menu.clear();
-    }
-   /* @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
-       *//* if (id == R.id.usuarios) {
+       /* if (id == R.id.usuarios) {
             Log.i("AppInfo", "ID USUARIOS: " );
             startActivity(new Intent(getActivity().getBaseContext(), ListaUsuario.class));
 
-        } else *//*if (id == R.id.logout) {
+        } else */if (id == R.id.logout) {
             ParseUser.getCurrentUser().logOut();
             startActivity(new Intent(getActivity(), DispatchActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }*/
+    }
 }

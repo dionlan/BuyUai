@@ -1,10 +1,5 @@
 package com.parse.starter;
 
-import android.app.AlertDialog;
-import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -13,32 +8,17 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.InputType;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-import com.parse.ParseException;
-import com.parse.ParseObject;
+
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
-import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import fragments.FeedFragment;
-import fragments.PerfilComercianteFragment;
-import fragments.PerfilUsuarioFragment;
+import com.parse.starter.fragments.FeedFragment;
+import com.parse.starter.fragments.PerfilComercianteFragment;
+import com.parse.starter.fragments.PerfilUsuarioFragment;
 
 public class PrincipalMainActivity extends AppCompatActivity {
 

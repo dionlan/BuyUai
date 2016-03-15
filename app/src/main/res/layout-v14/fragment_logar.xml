@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="fragments.LogarFragment"
+    tools:context=".fragments.LogarFragment"
     android:background="#91c4f3">
 
     <LinearLayout
@@ -46,11 +46,18 @@
             <Button
                 android:id="@+id/action_button_login"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="26dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/botao_seguir"
+                android:text="Entrar"
+                android:textColor="#ffffff"
+                android:textSize="12sp"
+                android:layout_gravity="center_vertical"
                 android:layout_centerVertical="true"
                 android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:text="Entrar" />
+                android:layout_alignParentStart="true"/>
+
+
         </LinearLayout>
 
     </LinearLayout>

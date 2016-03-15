@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.parse.ParseUser;
-
-import fragments.FeedFragment;
+import com.parse.starter.activity.LoginNovoActivity;
+import com.parse.starter.activity.MainActivity;
 
 /**
  * Created by rufflez on 7/8/14.
